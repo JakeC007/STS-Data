@@ -1,0 +1,63 @@
+---
+title: "Pew_Cleaning"
+author: "Jake Chanenson"
+date: "3/8/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(foreign)      
+library(ggplot2)      
+library(colorspace)   #better colors for ggplot
+library(tidyverse)    
+library(dplyr)
+library(gridExtra)
+library(viridis)
+library(ggridges)
+library(socviz)
+library(broom)
+library(stargazer)
+library(corrr)
+library(GGally)
+library(haven) # needed to import stada data
+```
+
+## Initial Data Import
+```{r}
+pew <- read_sav("../Pew/ATP W49.sav")
+
+pew$haveSmartSpeak <-as_factor(pew$HOMEASSIST1_W49)
+pew$tracked <-as_factor(pew$TRACKCO1a_W49)
+
+```
+
+
+```{r}
+pew %>% drop_na(tracked) %>% ggplot(aes(x = tracked, fill = haveSmartSpeak)) +
+        geom_bar(position = "dodge", color = 'black') +
+        theme(axis.text.x = element_text(angle=25, hjust = 1)) +
+        labs( title = 'Dodged Bar Chart: \nDo Smart Speaker Owners Think They Are Being Tracked Online',
+            x = "Opnion on How Much of What You Do Online is Being Tracked",
+            y = "Count",
+            fill = "Smart Speaker Ownership",
+            caption = "Pew Research Data")
+```
+
+```{r}
+pew %>% drop_na(tracked) %>%  filter(haveSmartSpeak != "Refused") %>% ggplot(aes(x = tracked, fill = tracked)) +
+        geom_bar(color = 'black') +
+        facet_wrap(haveSmartSpeak~., nrow = 2) +
+        geom_text(stat='count', aes(label=..count..), vjust= -.5) +
+        ylim(0,800) +
+        theme(axis.text.x = element_text(angle=25, hjust = 1)) +
+        labs( title = 'Faceted Bar Chart: \nDo Smart Speaker Owners Think They Are Being Tracked Online',
+            x = "Opnion on How Much of What You Do Online is Being Tracked",
+            y = "Count",
+            fill = "Smart Speaker Ownership",
+            caption = "Pew Research Data")
+
+ggsave(file="HW3_faceted_pew.PNG", width = 12, height = 10, units = "in")
+```
+
