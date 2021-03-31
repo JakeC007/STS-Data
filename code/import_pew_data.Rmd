@@ -53,8 +53,6 @@ head(pew)
     write.csv(pew, "../../Pew/Pew_Tech.csv")
     save(pew, file = "../../Pew/pewTech.RData")
 }
-
-load("../../Pew/pewTech.RData")
 ```
 
 
