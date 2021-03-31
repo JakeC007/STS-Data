@@ -1,5 +1,5 @@
 ---
-title: "Pew_Cleaning"
+title: "Pew Cleaning"
 author: "Jake Chanenson"
 date: "3/8/2021"
 output: html_document
@@ -26,9 +26,10 @@ library(haven) #needed to import stada data
 
 
 ## Initial Data Import
-```{r}
+```{r, include=FALSE}
+if(!file.exists("../../Pew/pewTech.RData") ) { #skip import if RData file exists
 # Data set from Pew 
-importedData <- read_sav("../Pew/ATP W49.sav")
+importedData <- read_sav("../../Pew/ATP W49.sav")
 
 # Add the QKEY col
 pew <- importedData$QKEY
@@ -48,18 +49,18 @@ pew <- cbind(pew,temp)
 head(pew)
 
 # Save the file 
-if(!file.exists("../Pew/pewTech.RData") ) {
-    write.csv(pew, "../Pew/Pew_Tech.csv")
-    save(pew, file = "../Pew/pewTech.RData")
+
+    write.csv(pew, "../../Pew/Pew_Tech.csv")
+    save(pew, file = "../../Pew/pewTech.RData")
 }
 
-load("../Pew/pewTech.RData")
+load("../../Pew/pewTech.RData")
 ```
 
-## Sample Viz
 
-```{r}
-load("../Pew/pewTech.RData")
+## Sample Viz
+```{r, echo=FALSE}
+load("../../Pew/pewTech.RData")
 
 pew %>% drop_na(TRACKCO1a_W49) %>% ggplot(aes(x = TRACKCO1a_W49, fill = HOMEASSIST1_W49)) +
         geom_bar(position = "dodge", color = 'black') +
@@ -69,9 +70,10 @@ pew %>% drop_na(TRACKCO1a_W49) %>% ggplot(aes(x = TRACKCO1a_W49, fill = HOMEASSI
             y = "Count",
             fill = "Smart Speaker Ownership",
             caption = "Pew Research Data")
+ggsave(file="../imgs/hi.png", width = 12, height = 10, units = "in")
 ```
 
-```{r}
+```{r, echo=FALSE}
 pew %>% drop_na(TRACKCO1a_W49) %>%  filter(HOMEASSIST1_W49 != "Refused") %>% ggplot(aes(x = TRACKCO1a_W49, fill = TRACKCO1a_W49)) +
         geom_bar(color = 'black') +
         facet_wrap(HOMEASSIST1_W49~., nrow = 2) +
@@ -84,7 +86,7 @@ pew %>% drop_na(TRACKCO1a_W49) %>%  filter(HOMEASSIST1_W49 != "Refused") %>% ggp
             fill = "Smart Speaker Ownership",
             caption = "Pew Research Data")
 
-ggsave(file="HW3_faceted_pew.PNG", width = 12, height = 10, units = "in")
+ggsave(file="../imgs/faceted_pew.png", width = 12, height = 10, units = "in")
 ```
 
 
