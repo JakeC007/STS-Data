@@ -21,21 +21,48 @@ library(broom)
 library(stargazer)
 library(corrr)
 library(GGally)
-library(haven) # needed to import stada data
+library(haven) #needed to import stada data
 ```
+
 
 ## Initial Data Import
 ```{r}
+# Data set from Pew 
 pew <- read_sav("../Pew/ATP W49.sav")
 
+# Add the QKEY col
+df <- pew$QKEY
+
+# Iterate through data set
+for(i in 2:(ncol(pew)-1)){ #skip the QKEY column (1st col) and the WEIGHT_W49 col (last col)
+        temp <- as_factor(pew[ , i])
+        df <- cbind(df,temp)
+        temp <- 0
+}
+
+# Add the WEIGHT_W49 col
+temp <- as_factor(pew[ , ncol(pew)])
+df <- cbind(df,temp)
+
+# Show df
+head(df)
+
+# Save the file 
+if(!file.exists("../Pew/pewTech.RData") ) {
+    write.csv(df, "../Pew/Pew_Tech.csv")
+    save(df, file = "../Pew/pewTech.RData")
+}
+
+load("../Pew/pewTech.RData")
+```
+
+## Sample Viz
+
+```{r}
 pew$haveSmartSpeak <-as_factor(pew$HOMEASSIST1_W49)
 pew$tracked <-as_factor(pew$TRACKCO1a_W49)
 
-```
-
-
-```{r}
-pew %>% drop_na(tracked) %>% ggplot(aes(x = tracked, fill = haveSmartSpeak)) +
+df %>% drop_na(TRACKCO1a_W49) %>% ggplot(aes(x = TRACKCO1a_W49, fill = HOMEASSIST1_W49)) +
         geom_bar(position = "dodge", color = 'black') +
         theme(axis.text.x = element_text(angle=25, hjust = 1)) +
         labs( title = 'Dodged Bar Chart: \nDo Smart Speaker Owners Think They Are Being Tracked Online',
@@ -46,9 +73,9 @@ pew %>% drop_na(tracked) %>% ggplot(aes(x = tracked, fill = haveSmartSpeak)) +
 ```
 
 ```{r}
-pew %>% drop_na(tracked) %>%  filter(haveSmartSpeak != "Refused") %>% ggplot(aes(x = tracked, fill = tracked)) +
+df %>% drop_na(TRACKCO1a_W49) %>%  filter(HOMEASSIST1_W49 != "Refused") %>% ggplot(aes(x = TRACKCO1a_W49, fill = TRACKCO1a_W49)) +
         geom_bar(color = 'black') +
-        facet_wrap(haveSmartSpeak~., nrow = 2) +
+        facet_wrap(HOMEASSIST1_W49~., nrow = 2) +
         geom_text(stat='count', aes(label=..count..), vjust= -.5) +
         ylim(0,800) +
         theme(axis.text.x = element_text(angle=25, hjust = 1)) +
@@ -60,4 +87,5 @@ pew %>% drop_na(tracked) %>%  filter(haveSmartSpeak != "Refused") %>% ggplot(aes
 
 ggsave(file="HW3_faceted_pew.PNG", width = 12, height = 10, units = "in")
 ```
+
 
