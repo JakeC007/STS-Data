@@ -49,9 +49,8 @@ pew <- cbind(pew,temp)
 head(pew)
 
 # Save the file 
-
-    write.csv(pew, "../../Pew/Pew_Tech.csv")
-    save(pew, file = "../../Pew/pewTech.RData")
+write.csv(pew, "../../Pew/Pew_Tech.csv")
+save(pew, file = "../../Pew/pewTech.RData")
 }
 ```
 
