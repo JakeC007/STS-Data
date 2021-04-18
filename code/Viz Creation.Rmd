@@ -1,0 +1,94 @@
+---
+title: "Viz Creation"
+author: "Jake Chanenson"
+date: "4/18/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(foreign)      
+library(ggplot2)      
+library(colorspace)   #better colors for ggplot
+library(tidyverse)    
+library(dplyr)
+library(gridExtra)
+library(viridis)
+library(ggridges)
+library(socviz)
+library(broom)
+library(stargazer)
+library(corrr)
+library(GGally)
+library(haven) #needed to import stada data
+library(RColorBrewer)
+```
+
+```{r load-data}
+load("../../Pew/pewTech.RData")
+```
+
+## `Know` Dummy Var
+Generate counts and props of how many people get the following questions right 
+
+* KNOW9
+
+* KNOW8
+
+* KNOW7
+
+* KNOW4 
+
+* KNOW3
+
+* KNOW1
+
+```{r}
+## Generate count dummies
+count_df <- pew %>% mutate(K1T = ifelse(KNOW1_W49 == "Can track your visits and activity on the site", yes = 1, no = 0 ),
+               K3T = ifelse(KNOW3_W49 == "Has created a contract between itself and its users about how it will use their data", yes = 1, no = 0),
+               K4T = ifelse(KNOW4_W49 == "Information entered into the site is encrypted", yes = 1, no = 0),
+               K7T = ifelse(KNOW7_W49 == "Internet service providers should treat all traffic on their networks equally", yes = 1, no = 0),
+               K8T = ifelse(KNOW8_W49 == "A coworker who uses the same computer", yes = 1, no = 0),
+               K9T = ifelse(KNOW9_W49 == "Picture of 2-step code", yes = 1, no = 0)
+               ) %>% select(K1T, K3T, K4T, K7T, K8T, K9T)
+count_df
+
+## Sum count dummies, add to pew data set
+pew <- pew %>% mutate(sumKnow134789 = count_df$K1T+count_df$K3T+count_df$K4T+count_df$K7T+count_df$K8T+count_df$K9T,
+               propKnow134789 = sumKnow134789/6,
+               .after = TOTALKNOW_W49)
+```
+
+
+```{r}
+pew %>% ggplot(aes(x = sumKnow134789)) +
+  geom_bar()
+```
+
+
+```{r}
+pew <- pew %>% mutate(sumKnowFactor = dum, .after = sumKnow134789)
+
+foo1 <- levels(pew$sumKnowFactor) #why can't this be a quant var 
+
+pew %>% drop_na(DATAUSEd_W49) %>% ggplot(aes(x = DATAUSEd_W49, fill = sumKnowFactor)) +
+  geom_bar(position = "dodge") +
+  scale_fill_brewer(palette = "Dark2", limits = rev(foo1))
+```
+
+
+```{r}
+pew %>% drop_na(DATAUSEd_W49) %>% ggplot(aes(x = DATAUSEd_W49, y = propKnow134789)) +
+  geom_boxplot(outlier.colour="red", outlier.shape=16,
+             outlier.size=2, notch=FALSE) +
+  geom_jitter(shape=1, position=position_jitter(0.2)) +
+  scale_y_continuous(label = scales::percent) +
+  labs (
+    title = "Tech Literacy VS X ",
+    x = " Fitness Trackers Data Sharing With Medical Researchers\nseeking to better understand the link between exercise and heart disease",
+    y = "Prop"
+  )
+```
+
