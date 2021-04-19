@@ -69,6 +69,7 @@ pew %>% ggplot(aes(x = sumKnow134789)) +
 
 
 ```{r}
+dum <- as_factor(pew$sumKnow134789)
 pew <- pew %>% mutate(sumKnowFactor = dum, .after = sumKnow134789)
 
 foo1 <- levels(pew$sumKnowFactor) #why can't this be a quant var 
