@@ -93,3 +93,36 @@ pew %>% drop_na(DATAUSEd_W49) %>% ggplot(aes(x = DATAUSEd_W49, y = propKnow13478
   )
 ```
 
+
+
+```{r, echo = echoVal, warning= F, message = F}
+
+pew <- pew %>% mutate(HOMEASSIST1_num = ifelse(HOMEASSIST1_W49 == "Yes", yes = 1, 
+                                         ifelse(HOMEASSIST1_W49 == "No", yes = 0, no  = NA)))
+pew %>% drop_na(DATAUSEd_num) %>%  
+  ggplot(aes(x= propKnow134789, y=DATAUSEd_num)) +
+  geom_jitter(aes(color = DATAUSEd_num), alpha=.3, size =1, height = .1, width = .005)+
+  geom_smooth(method = "glm",
+    method.args = list(family = "binomial"), se = T, color ='black') +
+  # scale_color_manual(values = c('blue','red'))+
+  theme_bw()
+```
+
+```{r}
+
+pew <- pew %>% mutate(DATAUSEd_num = ifelse(DATAUSEd_W49 == "Acceptable", yes = 1, 
+                                         ifelse(DATAUSEd_W49 == "Unacceptable", yes = 0, 
+                                                ifelse(DATAUSEd_W49 == "Not sure", yes = -1, no  = NA))),
+                      DATAUSEd_fct = as_factor(DATAUSEd_W49))
+pew %>% drop_na(DATAUSEd_num) %>% filter(DATAUSEd_num != -1) %>%  
+  ggplot(aes(x= propKnow134789, y=DATAUSEd_num)) +
+  geom_jitter(aes(color = DATAUSEd_fct), alpha=.3, size =1, height = .1, width = .005)+
+  geom_smooth(method = "glm",
+    method.args = list(family = "binomial"), se = T, color ='black') +
+  # scale_color_manual(values = c('blue','red'))+
+  theme_bw()
+
+```
+
+
+
