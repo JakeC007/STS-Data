@@ -414,11 +414,12 @@ df_f3  <- df_f3  %>%
           "Law Enforcement's Use Of Facial Recognition" = FACE3c_W49)
 df_f3  <- as.data.frame(df_f3)
 df_f3 <- droplevels(df_f3) #remove unused levels 
-df_f3 <- df_f3[, c(1,3,2,4)] #change order of cols for facets to come in nice order 
+df_f3 <- df_f3[, c(3,2,1,4)] #change order of cols for facets to come in nice order
 
 ## Reverse levels 
 df_f3.reverse <- reverse.levels(df_f3)
-
+head(df_f3)
+head(df_f3.reverse)
                             
 ## Generate Title
 title2 <- "Trust In Responsible Use Of Facial Recognition Tech\nFaceted on Tech Literacy"
@@ -435,7 +436,7 @@ plot(likert(df_f3.reverse[,c(1:3)], grouping = df_f3.reverse[,4]), legend.positi
 ggsave(file = "../imgs/FACE3_center_percents.png")
 
 ## Center No Percents 
-plot(likert(df_f3.reverse2[,c(1:3)], grouping = df_f3.reverse[,4]), legend.position="right", centered = TRUE, plot.percents=TRUE, plot.percent.low=FALSE, plot.percent.high=FALSE, plot.percent.neutral=FALSE, center = 2.5) + 
+plot(likert(df_f3.reverse[,c(1:3)], grouping = df_f3.reverse[,4]), legend.position="right", centered = TRUE, plot.percents=TRUE, plot.percent.low=FALSE, plot.percent.high=FALSE, plot.percent.neutral=FALSE, center = 2.5) + 
   scale_fill_manual(values = brewer.pal(n=4,"RdBu"), breaks = c("Not at all", "Not too much", "Somewhat", "A great deal")) + #order and color the likert boxes
   ggtitle(title2) +
   guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend

@@ -22,6 +22,7 @@ library(stargazer)
 library(corrr)
 library(GGally)
 library(haven) #needed to import stada data
+saveVal <- F #flag to see if the .Rda fale has been saved this session
 ```
 
 
@@ -49,41 +50,61 @@ pew <- cbind(pew,temp)
 head(pew)
 
 # Save the file 
+saveVal <- F
 write.csv(pew, "../../Pew/Pew_Tech.csv")
 save(pew, file = "../../Pew/pewTech.RData")
 }
 ```
 
-
-## Sample Viz
-```{r, echo=FALSE}
+```{r load data}
 load("../../Pew/pewTech.RData")
-
-pew %>% drop_na(TRACKCO1a_W49) %>% ggplot(aes(x = TRACKCO1a_W49, fill = HOMEASSIST1_W49)) +
-        geom_bar(position = "dodge", color = 'black') +
-        theme(axis.text.x = element_text(angle=25, hjust = 1)) +
-        labs( title = 'Dodged Bar Chart: \nDo Smart Speaker Owners Think They Are Being Tracked Online',
-            x = "Opnion on How Much of What You Do Online is Being Tracked",
-            y = "Count",
-            fill = "Smart Speaker Ownership",
-            caption = "Pew Research Data")
-ggsave(file="../imgs/hi.png", width = 12, height = 10, units = "in")
 ```
 
-```{r, echo=FALSE}
-pew %>% drop_na(TRACKCO1a_W49) %>%  filter(HOMEASSIST1_W49 != "Refused") %>% ggplot(aes(x = TRACKCO1a_W49, fill = TRACKCO1a_W49)) +
-        geom_bar(color = 'black') +
-        facet_wrap(HOMEASSIST1_W49~., nrow = 2) +
-        geom_text(stat='count', aes(label=..count..), vjust= -.5) +
-        ylim(0,800) +
-        theme(axis.text.x = element_text(angle=25, hjust = 1)) +
-        labs( title = 'Faceted Bar Chart: \nDo Smart Speaker Owners Think They Are Being Tracked Online',
-            x = "Opnion on How Much of What You Do Online is Being Tracked",
-            y = "Count",
-            fill = "Smart Speaker Ownership",
-            caption = "Pew Research Data")
 
-ggsave(file="../imgs/faceted_pew.png", width = 12, height = 10, units = "in")
+## Additions for KNOW Dummy Var
+```{r}
+###Generate KNOW Dummy Var###
+count_df <- pew %>% mutate(K1T = ifelse(KNOW1_W49 == "Can track your visits and activity on the site", yes = 1, no = 0 ),
+               K3T = ifelse(KNOW3_W49 == "Has created a contract between itself and its users about how it will use their data", yes = 1, no = 0),
+               K4T = ifelse(KNOW4_W49 == "Information entered into the site is encrypted", yes = 1, no = 0),
+               K7T = ifelse(KNOW7_W49 == "Internet service providers should treat all traffic on their networks equally", yes = 1, no = 0),
+               K8T = ifelse(KNOW8_W49 == "A coworker who uses the same computer", yes = 1, no = 0),
+               K9T = ifelse(KNOW9_W49 == "Picture of 2-step code", yes = 1, no = 0)
+               ) %>% select(K1T, K3T, K4T, K7T, K8T, K9T)
+# count_df
+
+## Sum count dummies, add to pew data set
+pew <- pew %>% mutate(sumKnow134789 = count_df$K1T+count_df$K3T+count_df$K4T+count_df$K7T+count_df$K8T+count_df$K9T,
+               propKnow134789 = sumKnow134789/6,
+               .after = TOTALKNOW_W49)
+
+
+###sumKnowFactor###
+tmpfct <- as_factor(pew$sumKnow134789)
+pew <- pew %>% mutate(sumKnowFactor = tmpfct, .after = sumKnow134789)
+
+###groupKnow###
+pew <- pew %>% mutate(groupKnow = ifelse(sumKnowFactor == 0, yes = "No Literacy",
+                                   ifelse(sumKnowFactor == 1| sumKnowFactor == 2| sumKnowFactor == 3| sumKnowFactor == 4, yes = "Some Literacy", no = "High Literacy")),
+               groupKnow = as_factor(groupKnow),
+               .after = sumKnowFactor)
 ```
+
+
+
+## Additions for RTBFG Dummy Var
+```{r}
+# TODO
+```
+
+
+```{r save updated data frame}
+if(!file.exists("../../Pew/pewTech.RData") ) { #dummy proofing 
+saveVal <- T
+# Save the file 
+save(pew, file = "../../Pew/pewTech.RData")
+}
+```
+
 
 
