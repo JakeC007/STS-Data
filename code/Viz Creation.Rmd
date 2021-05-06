@@ -378,6 +378,7 @@ pew %>% drop_na(CONCERNCO_W49) %>% filter(CONCERNCO_W49 != "Refused") %>% ggplot
     x = "Tech Literacy Level",
     caption = "Series 2 Picture 4\nNo Literacy = 0/6\nSome Literacy = [1/6, 4/6]\nHigh Literacy = [5/6, 6/6]"
   )
+ggsave(file = "../imgs/CONCERNCO.png")
 ```
 This is interesting because the concern drops as people gain a higer litercay
 
@@ -397,6 +398,7 @@ pew %>% drop_na(PROFILE4_W49) %>% filter(PROFILE4_W49 != "Refused") %>% ggplot(a
     x = "Tech Literacy Level",
     caption = "Series 2 Picture 4\nNo Literacy = 0/6\nSome Literacy = [1/6, 4/6]\nHigh Literacy = [5/6, 6/6]"
   )
+ggsave(file = "../imgs/PROFILE4.png")
 ```
 The interesting takeaway here is that regardless of tech litercay people don't understand what data is used to target them. This is interesting because I HAVE ANOTHER CORRELATION TO SHOW THAT LITERACY AND TECH WORRY are hand in hand 
 
@@ -412,26 +414,28 @@ df_f3  <- df_f3  %>%
           "Law Enforcement's Use Of Facial Recognition" = FACE3c_W49)
 df_f3  <- as.data.frame(df_f3)
 df_f3 <- droplevels(df_f3) #remove unused levels 
+df_f3 <- df_f3[, c(1,3,2,4)] #change order of cols for facets to come in nice order 
 
 ## Reverse levels 
 df_f3.reverse <- reverse.levels(df_f3)
 
+                            
 ## Generate Title
-title2 <- "Trust In Responsible Use Of Facial Recognition Tech\nFaceted on Tech Litercay"
+title2 <- "Trust In Responsible Use Of Facial Recognition Tech\nFaceted on Tech Literacy"
 ```
 
 
 ```{r FACE3 Viz}
 
 ## Center with percents
-plot(likert(df_f3.reverse[,c(1:3)], grouping = df_f3.reverse[,4]), legend.position="right", centered = TRUE, plot.percents=FALSE, plot.percent.low=TRUE, plot.percent.high=TRUE, plot.percent.neutral=TRUE, center = 2.5) + 
+plot(likert(df_f3.reverse[,c(1:3)], grouping = df_f3.reverse[,4]), legend.position="right", centered = TRUE, plot.percents=FALSE, plot.percent.low=TRUE, plot.percent.high=TRUE, plot.percent.neutral=FALSE, center = 2.5, text.color = 'purple') + 
   scale_fill_manual(values = brewer.pal(n=4,"RdBu"), breaks = c("Not at all", "Not too much", "Somewhat", "A great deal")) + #order and color the likert boxes
   ggtitle(title2) +
   guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
 ggsave(file = "../imgs/FACE3_center_percents.png")
 
 ## Center No Percents 
-plot(likert(df_f3.reverse[,c(1:3)], grouping = df_f3.reverse[,4]), legend.position="right", centered = TRUE, plot.percents=FALSE, plot.percent.low=FALSE, plot.percent.high=FALSE, plot.percent.neutral=FALSE, center = 2.5) + 
+plot(likert(df_f3.reverse2[,c(1:3)], grouping = df_f3.reverse[,4]), legend.position="right", centered = TRUE, plot.percents=TRUE, plot.percent.low=FALSE, plot.percent.high=FALSE, plot.percent.neutral=FALSE, center = 2.5) + 
   scale_fill_manual(values = brewer.pal(n=4,"RdBu"), breaks = c("Not at all", "Not too much", "Somewhat", "A great deal")) + #order and color the likert boxes
   ggtitle(title2) +
   guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
@@ -485,6 +489,7 @@ plot(likert(df_f4.reverse[,c(1:4)], grouping = df_f4.reverse[,5]), legend.positi
   # scale_fill_manual(values = brewer.pal(n=4,"RdBu")) +
   ggtitle(title1) +
   guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
+ggsave(file = "../imgs/FACE4.png")
 
 ##
 plot(likert(df_f4.reverse2[,c(1:4)], grouping = df_f4.reverse[,5]), legend.position="right", centered = FALSE, plot.percents=FALSE, plot.percent.low=FALSE, plot.percent.high=FALSE, plot.percent.neutral=FALSE,) +
