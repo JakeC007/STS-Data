@@ -27,7 +27,7 @@ saveVal <- F #flag to see if the .Rda fale has been saved this session
 
 
 ## Initial Data Import
-```{r, include=FALSE}
+```{r generate Rda file, include=FALSE}
 if(!file.exists("../../Pew/pewTech.RData") ) { #skip import if RData file exists
 # Data set from Pew 
 importedData <- read_sav("../../Pew/ATP W49.sav")
@@ -62,7 +62,7 @@ load("../../Pew/pewTech.RData")
 
 
 ## Additions for KNOW Dummy Var
-```{r}
+```{r KNOW Dummy Var}
 ###Generate KNOW Dummy Var###
 count_df <- pew %>% mutate(K1T = ifelse(KNOW1_W49 == "Can track your visits and activity on the site", yes = 1, no = 0 ),
                K3T = ifelse(KNOW3_W49 == "Has created a contract between itself and its users about how it will use their data", yes = 1, no = 0),
@@ -92,9 +92,18 @@ pew <- pew %>% mutate(groupKnow = ifelse(sumKnowFactor == 0, yes = "No Literacy"
 
 
 
-## Additions for RTBFG Dummy Var
-```{r}
-# TODO
+## Additions for RTBF Dummy Var
+```{r RTBF Dummy Var}
+count_rtbf <- pew %>% mutate(forget_a = ifelse(RTBFa_W49 == "Yes, should be able to remove this from online searches", yes = 1, no = 0),
+                             forget_b = ifelse(RTBFb_W49 == "Yes, should be able to remove this from online searches", yes = 1, no = 0),
+                             forget_c = ifelse(RTBFc_W49 == "Yes, should be able to remove this from online searches", yes = 1, no = 0),
+                             forget_d = ifelse(RTBFd_W49 == "Yes, should be able to remove this from online searches", yes = 1, no = 0)
+                             ) %>% select(forget_a, forget_b, forget_c, forget_d)
+
+## Sum RTBF count dummies, add to pew data set
+pew <- pew %>% mutate(sumRTBF = count_rtbf$forget_a + count_rtbf$forget_b + count_rtbf$forget_c + count_rtbf$forget_d,
+                      propRTBF = sumRTBF/4,
+                      .after = RTBFd_W49)
 ```
 
 

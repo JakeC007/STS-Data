@@ -1,0 +1,54 @@
+---
+title: "RTBF Visualization"
+output:
+  pdf_document: default
+word_document: default
+html_document: default
+---
+  
+### Author: Adriana Knight
+  
+```{r load-libraries, echo = F, results = 'hide', message=F, warning = F}
+library(tinytex)
+library(knitr)
+library(ggplot2)   #plotting package
+library(gridExtra)  #allow side by side plots
+library(tidyr)   #a widely used, but relatively new, package for producing tidier data and tidier output
+library(broom)        #a widely used, but relatively new, package for producing tidier data and tidier output; part of tidyverse
+library(dplyr)
+echoVal <- F   #change this to FALSE for presentations where you don't want to show your code in the knitted document
+```
+
+```{r dataSetup, echo = echoVal}
+load("../../Pew/pewTech.RData")
+```
+
+```{r moreDataSetup, echo = echoVal}
+## Generate RTBF count dummies 
+count_rtbf <- pew %>% mutate(forget_a = ifelse(RTBFa_W49 == "Yes, should be able to remove this from online searches", yes = 1, no = 0),
+                             forget_b = ifelse(RTBFb_W49 == "Yes, should be able to remove this from online searches", yes = 1, no = 0),
+                             forget_c = ifelse(RTBFc_W49 == "Yes, should be able to remove this from online searches", yes = 1, no = 0),
+                             forget_d = ifelse(RTBFd_W49 == "Yes, should be able to remove this from online searches", yes = 1, no = 0)
+                             ) %>% select(forget_a, forget_b, forget_c, forget_d)
+
+## Sum RTBF count dummies, add to pew data set
+pew <- pew %>% mutate(sumRTBF = count_rtbf$forget_a + count_rtbf$forget_b + count_rtbf$forget_c + count_rtbf$forget_d,
+                      propRTBF = sumRTBF/4,
+                      .after = RTBFd_W49)
+```
+
+```{r central_fig, echo = echoVal}
+levels(pew$PUBLICDATA_W49) <- c("Find others' information","Keep their own information private", "Refused")
+pew %>% drop_na(PUBLICDATA_W49) %>% drop_na(sumRTBF) %>% filter(PUBLICDATA_W49 != "Refused") %>% ggplot(aes(x = PUBLICDATA_W49, fill = as.factor(sumRTBF))) +
+  geom_bar(position = "dodge", color = 'black') +
+  labs (
+    title = "Attitudes on How Many Categories of Data Should Be Protected by\n\"The Right To Be Forgotten\" by Stance on Personal Data",
+    x = "Participants find it more important to...",
+    y = "",
+    caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"
+  ) +
+  scale_fill_brewer(palette="YlGnBu", name = "How many of the following\ncategories of data should\nfall under the Right To Be Forgotten:\n   -Data collected by law enforcement\n   -Employment history or work record\n   -Negative media coverage\n   -Potentially embarassing photos or\n     videos", labels=c("None","One","Two","Three","Four"))+
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_blank(), axis.line = element_line(colour = "black"))
+
+```

@@ -1,0 +1,176 @@
+---
+title: "Submission"
+author: "Jake Chanenson and Adriana Knight"
+date: "5/7/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(foreign)      
+library(ggplot2)      
+library(colorspace)   #better colors for ggplot
+library(tidyverse)    
+library(dplyr)
+library(gridExtra)
+library(viridis)
+library(ggridges)
+library(broom)
+library(stargazer)
+library(corrr)
+library(GGally)
+library(RColorBrewer)
+library(grid)
+library(likert) # for creating a likert plot
+echoval <- T
+load("../../Pew/pewTech.RData")
+```
+
+## Introduction 
+
+https://docs.google.com/document/d/1Omlr2cpmMBdgSE8haPFzKQSpPuO8OWO681qwiMvXYfk/edit
+
+
+## Key Figure 1
+
+```{r RTBF, echo=echoval}
+levels(pew$PUBLICDATA_W49) <- c("Find others' information","Keep their own information private", "Refused")
+pew %>% drop_na(PUBLICDATA_W49) %>% drop_na(sumRTBF) %>% filter(PUBLICDATA_W49 != "Refused") %>% ggplot(aes(x = PUBLICDATA_W49, fill = as.factor(sumRTBF))) +
+  geom_bar(position = "dodge", color = 'black') +
+  labs (
+    title = "Attitudes on How Many Categories of Data Should Be Protected by\n\"The Right To Be Forgotten\" by Stance on Personal Data",
+    x = "Participants find it more important to...",
+    y = "",
+    caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"
+  ) +
+  scale_fill_brewer(palette="YlGnBu", name = "How many of the following\ncategories of data should\nfall under the Right To Be Forgotten:\n   -Data collected by law enforcement\n   -Employment history or work record\n   -Negative media coverage\n   -Potentially embarassing photos or\n     videos", labels=c("None","One","Two","Three","Four"))+
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_blank(), axis.line = element_line(colour = "black"))
+```
+
+
+### Explanation of Key Figure 1
+BLAH BLAH BLAH BLAH.....
+BLAH
+BLAH
+BLAH
+BLAH BLAH 
+
+
+## Key Figure 2
+
+```{r FACE3, echo= echoval}
+###Data Manipulation###
+## Create df of FACE3
+df_f3 <- pew %>% filter(FACE3a_W49 != "No Answer" & FACE3b_W49 != "No Answer" & FACE3c_W49 != "No Answer") %>% filter(FACE3a_W49 != "Refused" & FACE3b_W49 != "Refused" & FACE3c_W49 != "Refused") %>%  dplyr::select(c(FACE3a_W49, FACE3b_W49, FACE3c_W49, groupKnow))
+
+## Rename Cols
+df_f3  <- df_f3  %>% 
+  rename("Advertisers' Use Of Facial Recognition" = FACE3a_W49,
+          "Tech Companies' Use Of Facial Recognition" = FACE3b_W49,
+          "Law Enforcement's Use Of Facial Recognition" = FACE3c_W49)
+df_f3  <- as.data.frame(df_f3)
+df_f3 <- droplevels(df_f3) #remove unused levels 
+df_f3 <- df_f3[, c(3,2,1,4)] #change order of cols for facets to come in nice order
+
+## Reverse levels 
+df_f3.reverse <- reverse.levels(df_f3)
+
+                            
+## Generate Title
+title2 <- "Trust In Responsible Use Of Facial Recognition Tech\nFaceted on Tech Literacy"
+
+###Data Viz###
+## Centerd, No Percents 
+plot(likert(df_f3.reverse[,c(1:3)], grouping = df_f3.reverse[,4]), legend.position="right", centered = TRUE, plot.percents=TRUE, plot.percent.low=FALSE, plot.percent.high=FALSE, plot.percent.neutral=FALSE, center = 2.5) + 
+  scale_fill_manual(values = brewer.pal(n=4,"RdBu"), breaks = c("Not at all", "Not too much", "Somewhat", "A great deal")) + #order and color the likert boxes
+  ggtitle(title2) +
+  labs(caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
+  guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
+```
+
+
+### Explanation of Key Figure 2
+BLAH BLAH BLAH BLAH.....
+BLAH
+BLAH
+BLAH
+BLAH BLAH 
+
+
+## Appdendix 
+
+### Description of Dataset
+
+#### Varaibles Used and Their Questions Phrasing
+
+**Key Figure 1**
+
+* `var` - question phrasing
+
+* `var` - question phrasing
+
+* `var` - question phrasing
+
+* `var` - question phrasing
+
+
+**Key Figure 2**
+
+* `var` - question phrasing
+
+* `var` - question phrasing
+
+* `var` - question phrasing
+
+* `var` - question phrasing
+
+### Additional Figures For Key Figure 1
+
+### Additional Figures For Key Figure 2
+
+### Additional Tables For Key Figure 1
+
+### Additional Tables For Key Figure 2
+
+### Discussion of Uncertainty & Inference
+
+**Key Figure 1**
+
+**Key Figure 2**
+
+### Discussion of Analytic  Choices
+
+**Key Figure 1**
+
+**Key Figure 2**
+
+### Discussion Of Other Ways We Could Have Made Our Key Figure
+
+**Key Figure 1**
+
+BLAH BLAH BLAH
+
+```{r RTBF alt, echo=echoval}
+
+```
+
+
+**Key Figure 2**
+
+I choose to to the likert graph instead of the 100% complete bar chart because..... BLAH BLAH BLAH
+
+```{r FACE3 Alt, echo=echoval}
+## 100% BarPlot
+plot(likert(df_f3[,c(1:3)], grouping = df_f3.reverse[,4]), legend.position="right", centered = FALSE, plot.percents=TRUE, plot.percent.low=FALSE, plot.percent.high=FALSE, plot.percent.neutral=FALSE, center = 2.5) + 
+  scale_fill_manual(values = brewer.pal(n=4,"RdBu"), breaks = c("Not at all", "Not too much", "Somewhat", "A great deal")) + #order and color the likert boxes
+  ggtitle(title2) +
+  labs(caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
+  guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
+```
+
+
+NOTE: NEED TO CREATE AND INCLUDE ALT. VERSION OF KEY FIGURE IN THIS SECTION
+
+
