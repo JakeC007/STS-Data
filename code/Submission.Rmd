@@ -23,6 +23,7 @@ library(GGally)
 library(RColorBrewer)
 library(grid)
 library(likert) # for creating a likert plot
+library(kableExtra) # not needed but makes the table nicer
 echoval <- F
 load("../../Pew/pewTech.RData")
 ```
@@ -63,7 +64,8 @@ BLAH BLAH
 
 ## Key Figure 2
 
-```{r FACE3, echo= echoval, warning = F}
+```{r FACE3, echo= echoval, message=FALSE}
+#TODO: deal with POS fig.cap = "Key Figure 2", fig.pos = "!H"
 ###Data Manipulation###
 ## Create df of FACE3
 df_f3 <- pew %>% filter(FACE3a_W49 != "No Answer" & FACE3b_W49 != "No Answer" & FACE3c_W49 != "No Answer") %>% filter(FACE3a_W49 != "Refused" & FACE3b_W49 != "Refused" & FACE3c_W49 != "Refused") %>%  dplyr::select(c(FACE3a_W49, FACE3b_W49, FACE3c_W49, groupKnow))
@@ -193,9 +195,9 @@ add at end of document production for naviation ease
 
 ### Additional Tables For Key Figure 2
 
-**Summary Statistics** 
 ```{r KF2-tables, echo=echoval}
 KF2_T1 <- summary(likert(df_f3.reverse[,c(1:3)], grouping = df_f3.reverse[,4]))
+KF2_T1 <- KF2_T1[, c(1,2,3,5,6,7)] # remove neutral column b/c it isn't relevant
 knitr::kable(KF2_T1, "simple", caption = "Summary Statistics of Key Figure 2")
 ```
 
@@ -229,7 +231,7 @@ BLAH BLAH BLAH
 
 I choose to to the likert graph instead of the 100% complete bar chart because..... BLAH BLAH BLAH
 
-```{r FACE3 Alt, echo=echoval, warning = F}
+```{r FACE3 Alt, echo=echoval, message=FALSE}
 ## 100% BarPlot
 plot(likert(df_f3[,c(1:3)], grouping = df_f3.reverse[,4]), legend.position="right", centered = FALSE, plot.percents=TRUE, plot.percent.low=FALSE, plot.percent.high=FALSE, plot.percent.neutral=FALSE, center = 2.5) + 
   scale_fill_manual(values = brewer.pal(n=4,"RdBu"), breaks = c("Not at all", "Not too much", "Somewhat", "A great deal")) + #order and color the likert boxes
