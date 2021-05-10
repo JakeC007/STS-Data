@@ -106,6 +106,18 @@ BLAH BLAH
 
 ### Description of Dataset
 
+The dataset we used is the 2019 PEW Survey on American Trends on Technology. The full citation for this data set
+is as follows:
+
+Pew Research Center. (2019). American Trends Panel (W49). Retrieved from https://www.dropbox.com/sh
+/adyrtaju2jd7a2d/AAC2fmHoYs2SwVYKqCIkTxOsa?dl=0
+
+The data set is a sample of 4272 respondents of people 18 years or older living in the US. This sample
+consisted of both English and Spanish-language survey takers. The methodology also details the stratified
+sampling. I have copied the statement from the methodology section below:
+
+> The ATP subsample was selected by grouping panelists into seven stratum 1. Non-internet panelists. There were 691 total panelists in this stratum and they are sampled at a rate of 100% 2. HS or less panelists. There were 2,027 total panelists in this stratum and they are sampled at a rate of 98.9%. 2,005 panelists were selected for Wave 49. 3. Hispanic, Unregistered or Non-volunteers. There were 5,312 total panelists in this stratum and they are sampled at a rate of 44.8%. 2,380 panelists were selected for Wave 49. 4. Black or 18-34 panelists. There were 1,253 total panelists and they are sampled at a rate of 18.2%. 228 panelists were selected for Wave 49. 5. Other panelists. There were 4,176 total panelists and they are sampled at a rate of 13.5%. 564 panelists were selected for Wave 49.
+
 #### Varaibles Used and Their Questions Phrasing
 
 
@@ -175,11 +187,20 @@ BLAH BLAH
 
 ### Additional Figures For Key Figure 2
 
-add at end for naviation ease 
+add at end of document production for naviation ease 
 
 ### Additional Tables For Key Figure 1
 
 ### Additional Tables For Key Figure 2
+
+**Summary Statistics** 
+```{r KF2-tables, echo=echoval}
+KF2_T1 <- summary(likert(df_f3.reverse[,c(1:3)], grouping = df_f3.reverse[,4]))
+knitr::kable(KF2_T1, "simple", caption = "Summary Statistics of Key Figure 2")
+```
+
+
+WHAT DO THEY WANT FOR A NUMERIC SUMMARY THAT INVOLVES UNCERTAINTY
 
 ### Discussion of Uncertainty & Inference
 
