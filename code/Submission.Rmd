@@ -23,13 +23,16 @@ library(GGally)
 library(RColorBrewer)
 library(grid)
 library(likert) # for creating a likert plot
-echoval <- T
+echoval <- F
 load("../../Pew/pewTech.RData")
 ```
 
-## Introduction 
 
 https://docs.google.com/document/d/1Omlr2cpmMBdgSE8haPFzKQSpPuO8OWO681qwiMvXYfk/edit
+
+## Introduction 
+
+Our physical and digital lives have been increasingly entwined during the first two decades of the twenty first century. A direct consequence of this entailment is the advent of what social psychologist Shoshana Zuboff calls "Surveillance Capitalism" – an economic model where a user’s personal data is commodified for profit generation. The commodification of personal data comes at the cost of user privacy as companies hoover up any and all quantifiable metrics about a given user. As such, it is now more important than ever to understand how the American people feel about issues surrounding the use of their data and their privacy. We choose two aspects of digital privacy to focus on: public sentiment surrounding right to be forgotten (RTBF) -- a privilege for people to remove photos, documents, and videos of themselves from public internet search -- and the privacy threat of Facial Recognition Technologies.    
 
 
 ## Key Figure 1
@@ -60,7 +63,7 @@ BLAH BLAH
 
 ## Key Figure 2
 
-```{r FACE3, echo= echoval}
+```{r FACE3, echo= echoval, warning = F}
 ###Data Manipulation###
 ## Create df of FACE3
 df_f3 <- pew %>% filter(FACE3a_W49 != "No Answer" & FACE3b_W49 != "No Answer" & FACE3c_W49 != "No Answer") %>% filter(FACE3a_W49 != "Refused" & FACE3b_W49 != "Refused" & FACE3c_W49 != "Refused") %>%  dplyr::select(c(FACE3a_W49, FACE3b_W49, FACE3c_W49, groupKnow))
@@ -105,30 +108,74 @@ BLAH BLAH
 
 #### Varaibles Used and Their Questions Phrasing
 
+
 **Key Figure 1**
 
-* `var` - question phrasing
+* `PUBLICDATA_W49` - "Today a wide range of information about people is searchable online. Do you think it is more important for people to have the ability to…"
 
-* `var` - question phrasing
+* `RTBF` - "Do you think that ALL Americans should have the right to have the following information about themselves removed from public online search results?"
 
-* `var` - question phrasing
-
-* `var` - question phrasing
+    - `RTBFa_W49` - "Data collected by law enforcement, such as criminal records or mugshots"
+    
+    - `RTBFb_W49` - "Information about their employment history or work record"
+    
+    - `RTBFc_W49` - "Negative media coverage"
+    
+    - `RTBFd_W49` - "Potentially embarrassing photos or videos"
 
 
 **Key Figure 2**
 
-* `var` - question phrasing
+* `FACE1` - "How much have you heard or read about the development of automated facial recognition technology that can identify someone based on a picture or video that includes their face?
 
-* `var` - question phrasing
 
-* `var` - question phrasing
+* `FACE2` - "Based on what you know, how effective do you think facial recognition technology is at the following things?"
+    
+    - `FACE2a_W49` - "Accurately identifying individual people"  
+    
+    - `FACE2b_W49` - "Accurately assessing someone’s gender"  
+        
+    - `FACE2c_W49` - "Accurately assessing someone’s race" 
+    
+    
+* `FACE3` - "How much, if at all, do you trust the following groups to use facial recognition technology responsibly?"
+    
+    - `FACE3a_W49` - "Advertisers"  
+    
+    - `FACE3b_W49` - "Technology companies"  
+        
+    - `FACE3c_W49` - "Law enforcement agencies" 
+    
+* `FACE4` - "In your opinion, is it acceptable or unacceptable to use facial recognition technology in the following situations?"
+    
+    - `FACE4a_W49` - "Law enforcement agencies assessing potential security threats in public spaces" 
+    
+    - `FACE4b_W49` - "Companies automatically tracking the attendance of their employees"  
+        
+    - `FACE4c_W49` - "Advertisers seeing how people respond to public advertising displays" 
 
-* `var` - question phrasing
+    - `FACE4d_W49` - "Apartment building landlords tracking who enters or leaves their buildings"
+    
+* `KNOW1_W49` - "If a website uses cookies, it means that the site…
+
+* `KNOW3_W49` - "When a website has a privacy policy, it means that the site… "
+
+* `KNOW4_W49` - "What does it mean when a website has 'https://' at the beginning of its URL, as opposed to 'http://' without the 's'? "
+
+* `KNOW7_W49` - "The term 'net neutrality' describes the principle that…"
+
+* `KNOW8_W49` - "Many web browsers offer a feature known as 'private browsing' or 'incognito mode.' If someone opens a webpage on their computer at work using incognito mode, which of the following groups will NOT be able to see their online activities?"
+
+* `KNOW9_W49` - "Some websites and online services use a security process known as two-step or two-factor authentication. Which of the following images is an example of two-factor authentication?"
+
+
+* `CONCERNCO_W49` - "How concerned are you, if at all, about how companies are using the data they collect about you?"
 
 ### Additional Figures For Key Figure 1
 
 ### Additional Figures For Key Figure 2
+
+add at end for naviation ease 
 
 ### Additional Tables For Key Figure 1
 
@@ -161,7 +208,7 @@ BLAH BLAH BLAH
 
 I choose to to the likert graph instead of the 100% complete bar chart because..... BLAH BLAH BLAH
 
-```{r FACE3 Alt, echo=echoval}
+```{r FACE3 Alt, echo=echoval, warning = F}
 ## 100% BarPlot
 plot(likert(df_f3[,c(1:3)], grouping = df_f3.reverse[,4]), legend.position="right", centered = FALSE, plot.percents=TRUE, plot.percent.low=FALSE, plot.percent.high=FALSE, plot.percent.neutral=FALSE, center = 2.5) + 
   scale_fill_manual(values = brewer.pal(n=4,"RdBu"), breaks = c("Not at all", "Not too much", "Somewhat", "A great deal")) + #order and color the likert boxes
