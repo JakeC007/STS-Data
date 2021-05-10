@@ -189,20 +189,123 @@ sampling. I have copied the statement from the methodology section below:
 
 ### Additional Figures For Key Figure 2
 
-add at end of document production for naviation ease 
+#### 1. Underlying Distribution of Tech Literacy
+
+```{r KNOW-Counts, echo=echoval}
+pew %>% ggplot(aes(fill =sumKnowFactor, x = groupKnow)) +
+  geom_bar(position = 'dodge', color = 'black') +
+  scale_fill_brewer(palette = "Blues") +
+  labs(
+    title = "Distribution of Tech Literacy Scores",
+    y = "Counts",
+    x = "Literacy Category",
+    fill = "Respondent's\nLiteracy Score",
+    caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"
+  ) +  
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_blank(), axis.line = element_line(colour = "black"))
+```
+
+#### 2. How much have you heard or read about the development of automated facial recognition technology that can identify someone based on a picture or video that includes their face
+```{r FACE2_Likert, echo=echoval, message=FALSE}
+pew %>% filter(FACE1_W49 != "Refused") %>% ggplot(aes(x = groupKnow, fill = FACE1_W49)) +
+  geom_bar(position = 'dodge', color = 'black') +
+  scale_fill_brewer(palette = "Dark2") +
+  labs(
+    title = "Respondent's Familiarity With Facial Recognition",
+    y = "Counts",
+    x = "Literacy Category",
+    fill = "How Much The Respondent\nKnows About Facial Recognition",
+    caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"
+  ) +  
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_blank(), axis.line = element_line(colour = "black"))
+```
+
+#### 3. People's Understanding of Facial Recognition 
+```{r FACE3_Likert, echo=echoval, message=FALSE}
+###Generate the Data Frame###
+## Create df of FACE2
+df_f2 <- pew %>% filter(FACE2a_W49 != "Refused" & FACE2b_W49 != "Refused" & FACE2c_W49 != "Refused") %>%  dplyr::select(c(FACE2a_W49, FACE2b_W49, FACE2c_W49, groupKnow))
+
+## Rename Cols
+df_f2  <- df_f2  %>% 
+  rename("Accurately identifying individual people" = FACE2a_W49,
+          "Accurately assessing someone’s gender" = FACE2b_W49,
+          "Accurately assessing someone’s race" = FACE2c_W49)
+df_f2  <- as.data.frame(df_f2)
+df_f2 <- droplevels(df_f2) #remove unused levels 
+# df_f2 <- df_f2[, c(3,2,1,4)] #change order of cols for facets to come in nice order
+
+## Reverse levels 
+df_f2.reverse <- reverse.levels(df_f2)
+
+                            
+## Generate Title
+titlef2 <- "How Effective Do Respondents Think Facial Recognition Is\nFaceted on Tech Literacy"
+
+###Graph The Likert Data###
+plot(likert(df_f2.reverse[,c(1:3)], grouping = df_f2.reverse[,4]), legend.position="right", centered = TRUE, plot.percents=TRUE, plot.percent.low=FALSE, plot.percent.high=FALSE, plot.percent.neutral=FALSE, center = 2.5) + 
+  scale_fill_manual(values = brewer.pal(n=4,"RdBu"), breaks = rev(levels(df_f2$`Accurately identifying individual people`))) + #order and color the likert boxes
+  ggtitle(titlef2) +
+    labs(caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
+  guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
+
+##100 Pcnt bar chart
+plot(likert(df_f2[,c(1:3)], grouping = df_f2.reverse[,4]), legend.position="right", centered = FALSE, plot.percents=TRUE, plot.percent.low=FALSE, plot.percent.high=FALSE, plot.percent.neutral=FALSE, center = 2.5) + 
+  scale_fill_manual(values = brewer.pal(n=4,"RdBu"), breaks = rev(levels(df_f2$`Accurately identifying individual people`))) + #order and color the likert boxes
+  ggtitle(titlef2) +
+    labs(caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
+  guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
+```
+
+#### 4. What situations People Think It Is Acceptable To Use Facial Recognition In the Following Situations?
+```{r FACE4_Likert, echo=echoval, message=FALSE}
+df_f4 <- pew %>% select(c(FACE4a_W49, FACE4b_W49, FACE4c_W49, FACE4d_W49, groupKnow))
+
+df_f4 <- df_f4 %>% 
+  rename("Law Enforcement Assesing Threats In Public Spaces" = FACE4a_W49,
+          "Companies Tracking Employee Attendance" = FACE4b_W49,
+          "Advertisers Measuring Responses To Public Displays" = FACE4c_W49,
+          "Lanlords Tracking Who Enters and Leaves Their Building" = FACE4d_W49)
+df_f4 <- as.data.frame(df_f4)
+df_f4 <- droplevels(df_f4, exclude = c("Refused", "Not sure", "NA", "<NA>")) #remove unused levels
+df_f4 <- droplevels(df_f4)
+
+## Reverse levels 
+df_f4.reverse <- reverse.levels(df_f4)
+df_f4.reverse2 <- reverse.levels(df_f4.reverse) #R wackyness reverse takes away NA so to get fd_f4 without NA we need to reverse the reverse
+
+titlef4 <- "Opinions on Facial Recognition Use Faceted on Tech Litercay"
+
+###Graph The Likert Data###
+plot(likert(df_f4.reverse[,c(1:4)], grouping = df_f4.reverse[,5]), legend.position="right", plot.percents=FALSE, plot.percent.low=FALSE, plot.percent.high=FALSE, plot.percent.neutral=FALSE, center = 1.5) +
+  scale_fill_manual(values = brewer.pal(n=4,"RdBu"), breaks = c("NA", "Not sure", "Unacceptable", "Acceptable")) + #order and color the likert boxes
+  ggtitle(titlef4) +
+    labs(caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
+  guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
+
+##100 Pcnt bar chart
+plot(likert(df_f4.reverse2[,c(1:4)], grouping = df_f4.reverse[,5]), legend.position="right", centered = FALSE, plot.percents=FALSE, plot.percent.low=FALSE, plot.percent.high=FALSE, plot.percent.neutral=FALSE,) +
+  scale_fill_manual(values = brewer.pal(n=4,"RdBu"), breaks = c("NA", "Not sure", "Unacceptable", "Acceptable")) + #order and color the likert boxes
+  ggtitle(titlef4) +
+    labs(caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
+  guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
+```
 
 ### Additional Tables For Key Figure 1
 
 ### Additional Tables For Key Figure 2
 
 ```{r KF2-tables, echo=echoval}
-KF2_T1 <- summary(likert(df_f3.reverse[,c(1:3)], grouping = df_f3.reverse[,4]))
-KF2_T1 <- KF2_T1[, c(1,2,3,5,6,7)] # remove neutral column b/c it isn't relevant
-knitr::kable(KF2_T1, "simple", caption = "Summary Statistics of Key Figure 2")
+KF2_T <- summary(likert(df_f3.reverse[,c(1:3)], grouping = df_f3.reverse[,4]))
+KF2_T1 <- KF2_T[, c(1,2,3,5,6)] # remove neutral column b/c it isn't relevant
+KFT_T2 <- KF2_T[, c(1,2,6,7)] # remove neutral column b/c it isn't relevant
+
+##Render Tables
+knitr::kable(KF2_T1, "simple", caption = "Summary Statistics For Key Figure 2")
+knitr::kable(KFT_T2, "simple", caption = "Numeric Summary That Involves Uncertainty For Key Figure 2")
 ```
-
-
-WHAT DO THEY WANT FOR A NUMERIC SUMMARY THAT INVOLVES UNCERTAINTY
 
 ### Discussion of Uncertainty & Inference
 
