@@ -120,7 +120,7 @@ sampling. I have copied the statement from the methodology section below:
 
 > The ATP subsample was selected by grouping panelists into seven stratum 1. Non-internet panelists. There were 691 total panelists in this stratum and they are sampled at a rate of 100% 2. HS or less panelists. There were 2,027 total panelists in this stratum and they are sampled at a rate of 98.9%. 2,005 panelists were selected for Wave 49. 3. Hispanic, Unregistered or Non-volunteers. There were 5,312 total panelists in this stratum and they are sampled at a rate of 44.8%. 2,380 panelists were selected for Wave 49. 4. Black or 18-34 panelists. There were 1,253 total panelists and they are sampled at a rate of 18.2%. 228 panelists were selected for Wave 49. 5. Other panelists. There were 4,176 total panelists and they are sampled at a rate of 13.5%. 564 panelists were selected for Wave 49.
 
-#### Varaibles Used and Their Questions Phrasing
+#### Variables Used and Their Questions Phrasing
 
 
 **Key Figure 1**
@@ -294,6 +294,25 @@ plot(likert(df_f4.reverse2[,c(1:4)], grouping = df_f4.reverse[,5]), legend.posit
 ```
 
 ### Additional Tables For Key Figure 1
+```{r KF1-tables, echo=echoval}
+#Simple simple table of counts
+KF1_T1 <- table(pew$sumRTBF, pew$publicDataNum) #public data should be private = 0
+colnames(KF1_T1) = c("Public Data Should Be Private","Public Data Should Be Public")
+
+#Table showing summary of sumRTBF var across publicData = 0 (private) and 1 (public)
+public_grouped_data <- pew %>%
+  group_by(publicDataNum)
+
+KF1_T2 <- public_grouped_data %>% drop_na(sumRTBF) %>% summarize(
+  mean=mean(sumRTBF, na.rm=TRUE),
+  sd=sd(sumRTBF, na.rm=TRUE)
+)
+
+##Render Tables
+knitr::kable(KF1_T1, "simple", caption = "Summary Statistics For Key Figure 1")
+knitr::kable(KF1_T2 , "simple", caption = "Numeric Summary That Involves Uncertainty For Key Figure 1")
+
+```
 
 ### Additional Tables For Key Figure 2
 
@@ -347,4 +366,7 @@ plot(likert(df_f3[,c(1:3)], grouping = df_f3.reverse[,4]), legend.position="righ
 
 NOTE: NEED TO CREATE AND INCLUDE ALT. VERSION OF KEY FIGURE IN THIS SECTION
 
+```{r}
+
+```
 

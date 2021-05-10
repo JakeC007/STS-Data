@@ -104,6 +104,9 @@ count_rtbf <- pew %>% mutate(forget_a = ifelse(RTBFa_W49 == "Yes, should be able
 pew <- pew %>% mutate(sumRTBF = count_rtbf$forget_a + count_rtbf$forget_b + count_rtbf$forget_c + count_rtbf$forget_d,
                       propRTBF = sumRTBF/4,
                       .after = RTBFd_W49)
+## Generate PublicData count dummies
+pew <- pew %>% mutate(publicDataNum = ifelse(PUBLICDATA_W49 == "Discover potentially useful information about others", yes = 1, no = 0),
+                                      .after = PUBLICDATA_W49)
 ```
 
 
