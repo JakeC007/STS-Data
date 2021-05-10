@@ -333,7 +333,7 @@ BLAH BLAH BLAH
 **Key Figure 2**
 
 When visualizing my key figure, I knew that I wanted to visualize some form of stacked bar chart to communicate the relative differences in comfort of various groups using facial recognition technology. Professor Ella Foster-Molina sent me an excellent article from Datawrapper making the case against diverging stacked bar charts and offering 100% bar charts as the better alternative. The article argues that “the main problem with diverging bars, however, is comparability.” On the whole, I agree; to me, the most compelling point of the piece relates to how neutrals are handled in the diverging stacked bar charts. Putting neutrals in the middle means that (1) none of the bars have a common baseline and (2) the chart is implying that part of the neutrals should be coded as positive and negative respectively. 
-That all being said, none of my charts have neutrals. Thus, I think the diverging bar chart looks just fine because the overall positive-negative trend both within and between facets is more pronounced.  
+That all being said, none of my charts have neutrals. Thus, I think the diverging bar chart looks just fine because the overall positive-negative trend both within and between facets is more pronounced. Below is what the figure would look like with a 100% bar chart.   
 
 ```{r FACE3 Alt, echo=echoval, message=FALSE}
 ## 100% BarPlot
