@@ -208,7 +208,7 @@ pew %>% drop_na(PUBLICDATA_W49) %>% filter(PUBLICDATA_W49 != "Refused") %>% ggpl
             axis.line = element_line(colour = "black"))
 ```
 
-### 2. How Much Data Do People Think We Have The Right To Forget?
+### 2. How Much Data Do People Think We Have The Right To Forget
 
 ```{r kf1-appendix-2, echo=echoval}
 pew %>% drop_na(sumRTBF) %>% ggplot(aes(x = sumRTBF)) +
@@ -294,10 +294,7 @@ grid.arrange(p1,p2,p3,p4,
 
 ### Additional Figures For Key Figure 2
 
-
-
 ### 1. Underlying Distribution of Tech Literacy
-
 
 ```{r KNOW-Counts, echo=echoval, out.height="50%"}
 pew %>% ggplot(aes(x =sumKnowFactor, fill = groupKnow)) +
@@ -498,8 +495,9 @@ pew %>% drop_na(PUBLICDATA_W49) %>% drop_na(sumRTBF) %>% filter(PUBLICDATA_W49 !
 
 **Key Figure 2**
 
-When visualizing my key figure, I knew that I wanted to visualize some form of stacked bar chart to communicate the relative differences in comfort of various groups using facial recognition technology. Professor Ella Foster-Molina sent me an excellent article from Datawrapper making the case against diverging stacked bar charts and offering 100% bar charts as the better alternative. The article argues that “the main problem with diverging bars, however, is comparability.” On the whole, I agree; to me, the most compelling point of the piece relates to how neutrals are handled in the diverging stacked bar charts. Putting neutrals in the middle means that (1) none of the bars have a common baseline and (2) the chart is implying that part of the neutrals should be coded as positive and negative respectively. 
-That all being said, none of my charts have neutrals. Thus, I think the diverging bar chart looks just fine because the overall positive-negative trend both within and between facets is more pronounced. Below is what the figure would look like with a 100% bar chart.   
+When visualizing my key figure, I knew that I wanted to visualize some form of stacked bar chart to communicate the relative differences in comfort of various groups using facial recognition technology. Professor Ella Foster-Molina sent me an excellent article from Datawrapper making the case against diverging stacked bar charts and offering 100% stacked bar charts as the better alternative. The article argues that “the main problem with diverging bars, however, is comparability.” On the whole, I agree; to me, the most compelling point of the piece relates to how neutrals are handled in the diverging stacked bar charts. Putting neutrals in the middle means that (1) none of the bars have a common baseline and (2) the chart is implying that part of the neutrals should be coded as positive and negative respectively. These issues are massively detrimental to making a visualization that is both easy to understand and not misleading. So, in general, the 100% stacked bar chart is the superior choice when visualizing Likert data.
+That all being said, none of my charts have neutrals. Thus, I think the diverging bar chart looks just fine because the overall positive-negative trend both within and between facets is more pronounced. Below is what the figure would look like with a 100% stacked bar chart.
+  
 
 ```{r FACE3 Alt, echo=echoval, message=FALSE}
 ## 100% BarPlot
@@ -510,6 +508,9 @@ plot(likert(df_f3[,c(1:3)], grouping = df_f3.reverse[,4]), legend.position="righ
   guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
 ```
 
+### Bibliography
+
+WE HAVE THE CITES I'll plot this in later - JC
 
 ### Distribution of Work
 
