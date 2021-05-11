@@ -190,17 +190,122 @@ sampling. I have copied the statement from the methodology section below:
 
 ### Additional Figures For Key Figure 1
 
+### 1. Count Of PUBLICDATA Responses
+
+```{r kf1-appendix-1, echo=echoval}
+levels(pew$PUBLICDATA_W49) <- c("Find others' information","Keep their own information private", "Refused")
+pew %>% drop_na(PUBLICDATA_W49) %>% filter(PUBLICDATA_W49 != "Refused") %>% ggplot(aes(x = PUBLICDATA_W49)) +
+  geom_bar(fill="#47b7c3", color = 'black') +
+  labs (
+    title = "Count of PUBLICDATA Responses",
+    subtitle = "Do you think it is more important for people to have the ability to...",
+    x = "Responses",
+    y = "Counts",
+    caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"
+  ) + theme(panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.background = element_blank(), 
+            axis.line = element_line(colour = "black"))
+```
+
+### 2. How Much Data Do People Think We Have The Right To Forget?
+
+```{r kf1-appendix-2, echo=echoval}
+pew %>% drop_na(sumRTBF) %>% ggplot(aes(x = sumRTBF)) +
+  geom_histogram(binwidth = 1, fill = "#a3d9b5") +
+  labs (
+    title = "Histogram of RTBF",
+    subtitle = "How much do people think we have the right to forget?",
+    x = "Number of acceptable categories to forget",
+    y = "Count",
+    caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"
+  ) + theme(panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.background = element_blank(), 
+            axis.line = element_line(colour = "black"))
+```
+
+### 3. Underlying Distribution Of Counts For All Four RTBF Categories
+
+```{r kf1-appendix-3, echo=echoval}
+
+levels(pew$RTBFa_W49) <- c("Should be forgotten","Should be remembered", "Refused")
+p1 <- pew %>% drop_na(RTBFa_W49) %>% filter(RTBFa_W49 != "Refused") %>% ggplot(aes(x = RTBFa_W49)) +
+      geom_bar(fill = "#47b7c3", color = 'black') +
+      labs (
+      title = "Right To Be Forgotten (A)",
+      subtitle = "Data collected by law enforcement"
+      ) + theme(axis.title.x=element_blank(), axis.title.y=element_blank(),
+                panel.grid.major = element_blank(),
+                panel.grid.minor = element_blank(),
+                panel.background = element_blank(), 
+                axis.line = element_line(colour = "black"))
+
+levels(pew$RTBFb_W49) <- c("Should be forgotten","Should be remembered", "Refused")
+p2 <- pew %>% drop_na(RTBFb_W49) %>% filter(RTBFb_W49 != "Refused") %>% ggplot(aes(x = RTBFb_W49)) +
+      geom_bar(fill = "#47b7c3", color = 'black') +
+      labs (
+      title = "Right To Be Forgotten (B)",
+      subtitle = "Employment history or work record"
+      ) + theme(axis.title.x=element_blank(), axis.title.y=element_blank(),
+                panel.grid.major = element_blank(),
+                panel.grid.minor = element_blank(),
+                panel.background = element_blank(), 
+                axis.line = element_line(colour = "black"))
+
+levels(pew$RTBFc_W49) <- c("Should be forgotten","Should be remembered", "Refused")
+p3 <- pew %>% drop_na(RTBFc_W49) %>% filter(RTBFc_W49 != "Refused") %>% ggplot(aes(x = RTBFc_W49)) +
+      geom_bar(fill = "#47b7c3", color = 'black') +
+      labs (
+      title = "Right To Be Forgotten (C)",
+      subtitle = "Negative media coverage"
+      ) + theme(axis.title.x=element_blank(), axis.title.y=element_blank(),
+                panel.grid.major = element_blank(),
+                panel.grid.minor = element_blank(),
+                panel.background = element_blank(), 
+                axis.line = element_line(colour = "black"))
+
+levels(pew$RTBFd_W49) <- c("Should be forgotten","Should be remembered", "Refused")
+p4 <- pew %>% drop_na(RTBFd_W49) %>% filter(RTBFd_W49 != "Refused") %>% ggplot(aes(x = RTBFd_W49)) +
+      geom_bar(fill = "#47b7c3", color = 'black') +
+      labs (
+      title = "Right To Be Forgotten (D)",
+      subtitle = "Potentially embarrassing photos or videos"
+      ) + theme(axis.title.x=element_blank(), axis.title.y=element_blank(),
+                panel.grid.major = element_blank(),
+                panel.grid.minor = element_blank(),
+                panel.background = element_blank(), 
+                axis.line = element_line(colour = "black"))
+
+grid.arrange(p1,p2,p3,p4, 
+             ncol=2,
+            top = textGrob("Underlying Distribution Of Counts For All Four RTBF Categories",
+              x = 0, # need to keep on left
+              y = .7,
+              just = "left", #left justified
+              gp = gpar(fontsize = 18) # bigger font
+             ),
+             bottom = textGrob("Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy",
+                               x = 1, #is on domian [0,1]
+                               gp = gpar(fontsize = 8), # smaller font
+                           just = "right") #right justified
+            ) 
+```
+
 ### Additional Figures For Key Figure 2
 
-#### 1. Underlying Distribution of Tech Literacy
 
 
-```{r KNOW-Counts, echo=echoval}
-pew %>% ggplot(aes(fill =sumKnowFactor, x = groupKnow)) +
+### 1. Underlying Distribution of Tech Literacy
+
+
+```{r KNOW-Counts, echo=echoval, out.height="50%"}
+pew %>% ggplot(aes(x =sumKnowFactor, fill = groupKnow)) +
   geom_bar(position = 'dodge', color = 'black') +
   scale_fill_brewer(palette = "Blues") +
   labs(
     title = "Distribution of Tech Literacy Scores",
+    subtitle = "How Many Out Of The Six Tech Literacy Questions Did Respondents Get Correct",
     y = "Counts",
     x = "Literacy Category",
     fill = "Respondent's\nLiteracy Score",
@@ -208,19 +313,20 @@ pew %>% ggplot(aes(fill =sumKnowFactor, x = groupKnow)) +
   ) +  
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
+
 ```
 
 
 
-#### 2. How much have you heard or read about the development of automated facial recognition technology that can identify someone based on a picture or video that includes their face
 
+### 2. Self Reported Facial Recognition Familiarity
 
-```{r FACE2_Likert, echo=echoval, message=FALSE}
+```{r FACE2_Bar, echo=echoval, message=FALSE}
 pew %>% filter(FACE1_W49 != "Refused") %>% ggplot(aes(x = groupKnow, fill = FACE1_W49)) +
   geom_bar(position = 'dodge', color = 'black') +
   scale_fill_brewer(palette = "Dark2") +
   labs(
-    title = "Respondent's Familiarity With Facial Recognition",
+    title = "Respondent's Self Reported Familiarity With Facial Recognition",
     y = "Counts",
     x = "Literacy Category",
     fill = "How Much The Respondent\nKnows About Facial Recognition",
@@ -230,7 +336,7 @@ pew %>% filter(FACE1_W49 != "Refused") %>% ggplot(aes(x = groupKnow, fill = FACE
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 ```
 
-#### 3. People's Understanding of Facial Recognition 
+### 3. Respondent's Understanding of Facial Recognition 
 ```{r FACE3_Likert, echo=echoval, message=FALSE}
 ###Generate the Data Frame###
 ## Create df of FACE2
@@ -268,8 +374,7 @@ plot(likert(df_f2[,c(1:3)], grouping = df_f2.reverse[,4]), legend.position="righ
 ```
 
 
-#### 4. What situations People Think It Is Acceptable To Use Facial Recognition In the Following Situations?
-
+### 4. What Situations Respondent Think It Is Acceptable To Use Facial Recognition
 
 ```{r FACE4_Likert, echo=echoval, message=FALSE}
 df_f4 <- pew %>% select(c(FACE4a_W49, FACE4b_W49, FACE4c_W49, FACE4d_W49, groupKnow))
@@ -353,9 +458,18 @@ knitr::kable(KFT_T2, "simple", caption = "Numeric Summary That Involves Uncertai
 
 ### Discussion of Analytic  Choices
 
-**Key Figure 1**
+Our analytical choices, while earnestly centered around most accurately representing the “truth,” are imperfect. We will proceed with an explanation and critique of our analytical choices using Pierre Bourdieu’s “Public Opinion Does Not Exist” and chapters 1 and 8 of *Data Visualization: A Practical Introduction* by Kieran Healy. 
 
-**Key Figure 2**
+Per Pierre Bourdieu’s article “Public Opinion Does Not Exist,” our primary critique of the analytic choices that both we and the source of our data set (the Pew Research Center) made is that we are relying heavily on the survey data yielded by the 2019 Pew American Trends Panel survey as being accurately representative of “the public.”
+
+First, to echo Bourdieu’s writings, we would like to problematize our use of the idea of “the public” at all; the data we have been manipulating, and the visualizations produced therein, are by no means necessarily representative of “the public.” The public, as we would like to think of it, does not exist. Per the topline we received as part of this data set, the *actual* body of people surveyed is 5,869 members of the American Trends Panel: a national, probability-based online panel of non-institutionalized adults living in households in the United States, including Alaska and Hawaii. The fact that this is a pre-selected, probability-based panel highlights that the body of participants does not encompass every single person living in the United States, nor does every person living in the United States who interacts in some meaningful way with technology and digital privacy fall under those categorizations. Pew Research Center is a meticulous, thorough group known for producing robust data as well as analyses of said data. Though, there will always be blind spots, which we must be mindful of when discussing* what* exactly our work produced.
+
+In that regard we are guilty, also, of using this data as a means of making some grand statement about the status of society as a means of gauging “where we are” in regard to digital privacy. Bourdieu writes that “[the public opinion poll] creates the idea that a unanimous public opinion exists in order to legitimate a policy, and strengthen the relations of the force upon which it is based or make it possible” (Bourdieu 125). Not every person has or is even *able* to produce an opinion on every single question posed by the survey; this much is proved by the sheer volume of NAs in response to certain questions. We also do not know *what* those NAs even mean; Bourdieu defines the “consensus effect” to be the tendency to overlook the proportion of respondents who gave “no reply” homogenizes the populus and ignores the political reasons for certain demographics to not respond depending on the variety of question. We do not know, truly, what those NAs mean; we made the decision to largely strike them from our visualizations to help tell a better story, but that narrative in turn excludes some body whose voices we neither know nor understand, which could in turn shift our general understanding of the field of digital privacy as a whole. 
+
+The last point of contention or concern within our analysis of our data is the constantly shifting landscape of digital literacy as a whole. We are still only a few mere decades into the digital age, meaning that there is a notable generational gap in literacy, skill sets, and general understanding of the tools offered and threats posed by the digital sphere. One of our visuals does aim to gauge technical literacy, using a dummy summary count variable, though we are cautious to take it as the unchallenged truth. For those and other variables, respondents may feign understanding of topics, or answer in line to how they think they should. As such, we can at best be only cautiously optimistic about the results our analyses yield, knowing that our variables are at best approximations, and we are representing not the hypothetical, homogenous “public” but rather a pre-selected sample group.
+
+Moving into our *visual* analyses, we turn to Healy, particularly the ideals outlined within chapters 1 and 8. Based on those readings, we took great pain thinking about presentation and accessibility in our design. The primary sins of bad design, as Healy describes them, are bad taste, bad perception, and bad data. We have done our best to address the source of data for analysis already above, and by no means cherry picked our data to further a narrative that we would prefer to tell over the one the data produced with our manipulations. For the first two, we have done our best to present the information in as clear and concise a way as we could manage. Leaning into ideas from chapter 8, we wanted to maintain not only high quality of visuals (no wasted ink, clear and regular visuals) but also accessibility. We used pre-built color palettes to display our data - sequential color palettes for unordered categorical data and diverging color palettes for ordered categorical data. In addition, it was important that we make sure our visuals were widely accessible by identifying color-blind friendly palates in colorbrewer via `display.brewer.all(colorblindFriendly = TRUE)` to select palettes that would work even for those with different abilities or perceptions. Our goal was to keep our color palette and our visual decisions at large consistent with the underlying data, visually pleasing, and accessible to all.
+
 
 ### Discussion Of Other Ways We Could Have Made Our Key Figure
 
@@ -363,8 +477,22 @@ knitr::kable(KFT_T2, "simple", caption = "Numeric Summary That Involves Uncertai
 
 BLAH BLAH BLAH
 
-```{r RTBF alt, echo=echoval}
-
+```{r central_fig, echo = echoval}
+levels(pew$PUBLICDATA_W49) <- c("Find Others' Information","Keep Their Own Information Private", "Refused")
+pew %>% drop_na(PUBLICDATA_W49) %>% drop_na(sumRTBF) %>% filter(PUBLICDATA_W49 != "Refused") %>% ggplot(aes(x = sumRTBF, fill = as.factor(sumRTBF))) +
+  geom_bar(position = "dodge", color= 'black') +
+  labs (
+    title = "Attitudes on How Many Categories of Data Should Be Protected by\n\"The Right To Be Forgotten\" by Stance on Personal Data",
+    x = "Count of How Many Categories Participants Identified to Fall\nUnder the Right To Be Forgotten",
+    y = "",
+    caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"
+  ) +
+  scale_fill_brewer(palette="YlGnBu") +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        legend.position = "none") + 
+  facet_wrap(~PUBLICDATA_W49)
 ```
 
 
