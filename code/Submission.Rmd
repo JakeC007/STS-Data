@@ -38,19 +38,22 @@ Our physical and digital lives have been increasingly entwined during the first 
 
 ## Key Figure 1
 
-```{r RTBF, echo=echoval}
-levels(pew$PUBLICDATA_W49) <- c("Find others' information","Keep their own information private", "Refused")
-pew %>% drop_na(PUBLICDATA_W49) %>% drop_na(sumRTBF) %>% filter(PUBLICDATA_W49 != "Refused") %>% ggplot(aes(x = PUBLICDATA_W49, fill = as.factor(sumRTBF))) +
-  geom_bar(position = "dodge", color = 'black') +
+```{r central_fig, echo = echoval}
+levels(pew$PUBLICDATA_W49) <- c("More Important To Find Others' Information","More Important To Keep Their Own\nInformation Private", "Refused")
+pew %>% drop_na(PUBLICDATA_W49) %>% drop_na(sumRTBF) %>% filter(PUBLICDATA_W49 != "Refused") %>% ggplot(aes(x = sumRTBF, fill = as.factor(sumRTBF))) +
+  geom_bar(position = "dodge") +
   labs (
-    title = "Attitudes on How Many Categories of Data Should Be Protected by\n\"The Right To Be Forgotten\" by Stance on Personal Data",
-    x = "Participants find it more important to...",
+    title = "Attitudes on How Many Categories of Data Should Be Protected by\n\"The Right To Be Forgotten\" Split by Stance on Personal Data Use",
+    x = "How many of the following categories fall under the Right to Be Forgotten?\n-Data collected by law enforcement   -Employment history or work record\n   -Negative media coverage   -Potentially embarassing photos or videos",
     y = "",
     caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"
   ) +
-  scale_fill_brewer(palette="YlGnBu", name = "How many of the following\ncategories of data should\nfall under the Right To Be Forgotten:\n   -Data collected by law enforcement\n   -Employment history or work record\n   -Negative media coverage\n   -Potentially embarassing photos or\n     videos", labels=c("None","One","Two","Three","Four"))+
+  scale_fill_brewer(palette="YlGnBu") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-        panel.background = element_blank(), axis.line = element_line(colour = "black"))
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        legend.position = "none") + 
+  facet_wrap(~PUBLICDATA_W49)
 ```
 
 
@@ -472,32 +475,34 @@ Moving into our *visual* analyses, we turn to Healy, particularly the ideals out
 
 **Key Figure 1**
 
-BLAH BLAH BLAH
+As I emphasized in the original text introducing my image, there were two factors that I found it extremely important to accurately represent within my visual examining respondents’ stance on digital privacy and personal data: the scale of the difference between counts for the two binary options to `PUBLICDATA_W49`, and the internal distribution for each of those two categories of respondents on the issue of the Right to Be Forgotten. 
 
-```{r central_fig, echo = echoval}
-levels(pew$PUBLICDATA_W49) <- c("Find Others' Information","Keep Their Own Information Private", "Refused")
-pew %>% drop_na(PUBLICDATA_W49) %>% drop_na(sumRTBF) %>% filter(PUBLICDATA_W49 != "Refused") %>% ggplot(aes(x = sumRTBF, fill = as.factor(sumRTBF))) +
-  geom_bar(position = "dodge", color= 'black') +
+I chose fairly quickly to forgo what I would think of as the “reverse” of my final visual: a faceted bar chart broken up by the four categories of information that the survey proposed as falling under the Right to Be Forgotten, showing the breakdown of each category of data’s response along the lines of those who prefer public versus private data. Though this visualization would have the advantage of showing a finer-grained understanding of the Right to Be Forgotten (showing each category directly rather than using a dummy variable of sum counts, as I ultimately did) it ultimately did not reveal anything new or interesting about the `PUBLICDATA_W49` responses. Every single response of counts only reflected the same relationship between public and private stances. This helped me narrow down my work to try and prioritize showing internal distinctions between those two categories instead.
+
+A visualization that I considered, but rejected, is one which uses not a dodged bar chart but a stacked one, showing the two categories of public versus private data people as two bars and having those bars be partitioned accordingly to reflect the internal distribution of counts of categories that should be protected. This visualization looks as follows:
+
+```{r central_fig_alt, echo = echoval}
+levels(pew$PUBLICDATA_W49) <- c("Find others'\ninformation","Keep their\nown information\nprivate", "Refused")
+pew %>% drop_na(PUBLICDATA_W49) %>% drop_na(sumRTBF) %>% filter(PUBLICDATA_W49 != "Refused") %>% ggplot(aes(x = PUBLICDATA_W49, fill = as.factor(sumRTBF))) +
+  geom_bar() +
   labs (
     title = "Attitudes on How Many Categories of Data Should Be Protected by\n\"The Right To Be Forgotten\" by Stance on Personal Data",
-    x = "Count of How Many Categories Participants Identified to Fall\nUnder the Right To Be Forgotten",
+    x = "Participants find it more important to...",
     y = "",
     caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"
   ) +
-  scale_fill_brewer(palette="YlGnBu") +
+  scale_fill_brewer(palette="YlGnBu", name = "How many of the following categories\nof data should fall under the Right To Be Forgotten:\n   -Data collected by law enforcement\n   -Employment history or work record\n   -Negative media coverage\n   -Potentially embarassing photos or\n     videos", labels=c("None","One","Two","Three","Four"))+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
-        axis.line = element_line(colour = "black"),
-        legend.position = "none") + 
-  facet_wrap(~PUBLICDATA_W49)
+        axis.line = element_line(colour = "black"))
 ```
+This visualization does both things that I would like it to do: it makes immediately apparent the difference in scale between those who prioritize public data versus private, and it has a clear color-coded breakdown of how many categories of data each class thinks should be protected. However, it is clunky and makes it harder to closely examine the distribution of sum counts than it is in my final graphic. As Healy breaks down, bad design is plagued by bad perception; stacking the boxes for each number makes it hard to directly compare the distribution of counts by not having a common base. This in turn warps our perception of the final data. So while this tells a similar story to the one up above, I ended up making additional aesthetic decisions to better convey that information in a clear and pleasing way.
 
 
 **Key Figure 2**
 
 When visualizing my key figure, I knew that I wanted to visualize some form of stacked bar chart to communicate the relative differences in comfort of various groups using facial recognition technology. Professor Ella Foster-Molina sent me an excellent article from Datawrapper making the case against diverging stacked bar charts and offering 100% stacked bar charts as the better alternative. The article argues that “the main problem with diverging bars, however, is comparability.” On the whole, I agree; to me, the most compelling point of the piece relates to how neutrals are handled in the diverging stacked bar charts. Putting neutrals in the middle means that (1) none of the bars have a common baseline and (2) the chart is implying that part of the neutrals should be coded as positive and negative respectively. These issues are massively detrimental to making a visualization that is both easy to understand and not misleading. So, in general, the 100% stacked bar chart is the superior choice when visualizing Likert data.
 That all being said, none of my charts have neutrals. Thus, I think the diverging bar chart looks just fine because the overall positive-negative trend both within and between facets is more pronounced. Below is what the figure would look like with a 100% stacked bar chart.
-  
 
 ```{r FACE3 Alt, echo=echoval, message=FALSE}
 ## 100% BarPlot
