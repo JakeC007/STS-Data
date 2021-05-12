@@ -30,7 +30,7 @@ load("../../Pew/pewTech.RData")
 
 ## Introduction 
 
-Our physical and digital lives have been increasingly entwined during the first two decades of the twenty first century as we enter into the digital age. A direct consequence of this development is the advent of what social psychologist Shoshana Zuboff calls "Surveillance Capitalism" – an economic model where a user’s personal data is commodified for profit generation. The commodification of personal data comes at the cost of user privacy as companies hoover up any and all quantifiable metrics about a given user in an effort to serve them more ads and services that are tailored to them. As such, it is now more important than ever to understand how the American people feel about issues surrounding the use of their data and their privacy. We chose two aspects of digital privacy to focus on: public sentiment surrounding the Right to Be Forgotten (RTBF) -- a privilege for people to remove photos, documents, and videos of themselves from public internet search -- and the privacy threat of Facial Recognition Technologies.
+Our physical and digital lives have been increasingly entwined during the first two decades of the twenty first century as we enter into the digital age. A direct consequence of this development is the advent of what social psychologist Shoshana Zuboff calls "Surveillance Capitalism" – an economic model where a user’s personal data is commodified for profit generation. The commodification of personal data comes at the cost of user privacy as companies hoover up any and all quantifiable metrics about a given user in an effort to serve them more ads and services that are tailored to them (Buttarelli, 2018) (Zuboff, 2019). As such, it is now more important than ever to understand how the American people feel about issues surrounding the use of their data and their privacy. We chose two aspects of digital privacy to focus on: public sentiment surrounding the Right to Be Forgotten (RTBF) -- a privilege for people to remove photos, documents, and videos of themselves from public internet search -- and the privacy threat of Facial Recognition Technologies.
 
 
 ## Key Figure 1
@@ -55,11 +55,20 @@ pew %>% drop_na(PUBLICDATA_W49) %>% drop_na(sumRTBF) %>% filter(PUBLICDATA_W49 !
 
 
 ### Explanation of Key Figure 1
-BLAH BLAH BLAH BLAH.....
-BLAH
-BLAH
-BLAH
-BLAH BLAH 
+In May 2014, almost seven years ago exactly, the European Union instituted a rule wherein individuals could request for links pointing to sensitive information about them to be expunged from search engines, on grounds of inadequacy, irrelevance, or excess (Chenou, J.-M., & Radu, R., 2019). This new ruling is imperfect, and grounds for controversy. Namely, the institution of private near-monopolistic tech companies as quasi-governmental arbiters of digital rights is a source of extreme concern. Critics point to the foundation of these companies’ business models on the collection of data which the ruling would try to protect as a conflict of interest that poses dangerous concern. Put another way, “the information age is based on productivity of knowledge. Information constitutes society’s raw material” (Seubert, S., & Becker, C. 2019). The “raw material” of information, as some may describe it, is filtered and folded into larger and more complicated digital profiles that may be used productively. “As so much is tracked and measured, it can be monetized and marketized and subjected to the larger forces of financial capitalism” (Silverman, J., 2017). The Right to Be Forgotten, for some, may feel like a radical shift, and for others may feel like a reinforcement of the status quo of surveillance capitalism, dressed up in a falsely compassionate guise. But what is the Right to Be Forgotten, on a practical level? How do ordinary people -- not tech conglomerates or social scientists -- grapple with their own and others’ data in an increasingly digitized world? The above visualization aims to unpack at least a small portion of that, taking aim on where the public’s priorities lie and how respondents may view their and others’ information in relation to the public sphere.
+
+The primary question we had when approaching the data set was what people conceive of (within their personal data) as private, versus what they view as something that falls within the purview of public discourse. In other words: what information about themselves do people think exists within the public domain, and what information about themselves should be protected? The wide range of new information technologies that have sprung into being in the last few decades redefine and complicate our previous understandings of the public versus private spheres; developments in technology have increased the capacity to access, store, and share information about personal matters. Though, our understanding of these boundaries remains in flux, and what cannot be described, defined, and understood cannot be defended or regulated (Bajpai, K., & Weber, K., 2017). As such, the first step to enact any sort of policy or engage in any public discourse is to first gauge public opinion.
+
+There are two questions relating to this topic in the survey our data set is sourced from: one is general (`PUBLICDATA_W49`, which asks respondents to identify whether it is more important to have access to everyone’s data or to keep their own data private) and one is specific (`RTBF_a`, `RTBF_b`, `RTBF_c`, `RTBF_d`, each of which ask respondents to choose whether an identified category of personal data should exist within the public or private spheres). We were interested in exploring how these two sets of questions interface with one another, and any trends we could find between responses.
+
+Of participants who responded to the public data question, the vast majority (about 75%) of respondents responded saying that they found it to be more important to protect one’s own personal data than to have access to others’. This trend was reflected across the board for all responses to questions examining the Right to Be Forgotten as applied to specific categories of data. What we found to be much more interesting in our exploration was examining internally, between the two categories (public-data driven respondents and private-data driven respondents) to see what the distribution of protected data types turned out to be. We created a dummy variable which counted how many categories of data a given participant identified as being protected, and for each category of respondent mapped out the distribution of these sum counts.
+
+The final visualization we selected shows these two distributions of visualizations side by side, to show both the difference in scale as well as the difference in internal distributions between the two. Immediately it becomes apparent, looking at key figure 1, that the distributions are different between these two categories of people; of those who are public data driven, the distribution of counts is approximately normal, peaking at two out of four categories of data being protected. For those respondents who are private data driven, the distribution of counts is left skewed, with the majority of respondents preferring higher numbers, if not all four, of the identified categories of data falling under the right to be forgotten.
+
+It was also important to us that the visualization register the scale of counts of responses. As mentioned before, the majority of respondents identified maintaining their own private data as being more important/valuable to them than having access to others’. We elected not to normalize the scale between these two categories, as not only does the distribution of protected category counts show something about the respondents’ opinions, so does the sheer scale by which these categories differ. 
+
+The resulting image allows the viewer a glimpse into the two major camps as identified by the survey, but does not reduce them to a simple binary, instead showing more intriguing trends in conceptualization of what is or isn’t private. It shows both internal distributions but also how different these two groupings of public or private data driven people are in their perceptions of what is or isn’t worth protecting.
+
 
 
 ## Key Figure 2
@@ -96,11 +105,47 @@ plot(likert(df_f3.reverse[,c(1:3)], grouping = df_f3.reverse[,4]), legend.positi
 
 
 ### Explanation of Key Figure 2
-BLAH BLAH BLAH BLAH.....
-BLAH
-BLAH
-BLAH
-BLAH BLAH 
+From a purely theoretical point of view, facial recognition technology represents a huge privacy risk to the general public. Any image -- be it a photo posted online or a single frame taken from a public CCTV camera -- can be used to accurately identify any individual by simply running a facial recognition program. Currently, if someone wants to reliably identify a person, they either have seen their face beforehand or they need to manually match to a known face in a face-identity repository. Facial recognition removes the former limitation and speeds up the latter exponentially by searching for a match in hundreds of thousands of faces extremely quickly (Venema, 2020). As a result, one’s anonymity is eroded away as there are multitudes of cameras in urban spaces (Smithsimon, 2003) whose data can be fed to a facial recognition system .
+ 
+When we reify the issue of facial recognition technology by limiting it to the capabilities of current technological systems, the risk posed by facial recognition adds a new level of dimensionality. Current facial recognition systems are far from accurate and are plagued with issues of bias in their datasets (Buolamwini & Gebru, 2018). These systems are trained to recognize primarily white, cisgender male faces -- meaning that they perform poorly on everyone else. Indeed, to highlight this issue, the ACLU ran the faces of the 115th United States Congress through Amazon’s off the shelf facial recognition tool called “Rekognition.” Amazon Rekognition identified 28 members of Congress as “other people who have been arrested for a crime.” Of those false matches“40 percent…were of people of color, even though they make up only 20 percent of Congress” (Snow, 2018).
+ 
+In short, facial recognition in the early 21st century is a highly flawed tool that outputs racist results and is a threat to the privacy of the general public. Currently, there is no national regulation of facial recognition technology (Crawford, 2019). However, public opinion of facial recognition technology can shape policy which can lead to privacy protections. This is why key figure 2 is important because it sheds light on how much trust a (somewhat) representative sample of the American people have in different groups using facial recognition technology.   
+ 
+Rather than just display the preexisting results from the Likert scale in the Pew survey, we decided to partition the data based off of how knowledgeable the respondent was about technology. The Pew survey had ten questions assessing each respondent’s knowledge on topics ranging from what the ‘s’ in ‘https’ means to how social media platforms generate revenue. Four of these questions -- “Which of the following is the largest source of revenue for most major social media platforms?”, “Where might someone encounter a phishing scam?”, “Which two companies listed below are both owned by Facebook?”, and a question asking respondents to identify a picture of Twitter co-founder Jack Dorsey -- were excluded because they were not directly related to measuring a respondent’s knowledge of how technology worked on a technical or legal level. Thus, each respondent received a literacy score between zero and six; this score was the sum of the number of questions the respondent answered correctly. Additional figure 1 for key figure 2 visualizes the underlying distribution of literacy scores.  
+ 
+The literacy scores are then binned into three levels -- “No Literacy,” “Some Literacy,” and “High Literacy” -- because visualizing all six levels had a poor data-to-ink ratio. The category of “No Literacy” consists solely of respondents who scored a zero out of 6, the category of Some Literacy consists of respondents whose scores ranged from a two out of six to a four out of six, and the category of High Literacy consists of respondents who scored either a five out of six or six out of six. Additional figure 2 for key figure 2 visualizes how the literacy scores are encapsulated by the binning. 
+After a cursory glance it is clear to see that this binning scheme puts an emphasis on those who knew nothing about the technical and legal aspects of technology. We felt that this was important to highlight because those who have no literacy are numerous and likely have a different perspective than those who have some tech literacy. We choose not to put an emphasis on those with a perfect score because the six questions we have to compute a tech literacy score measure a limited scope of knowledge and the difference between getting five or six questions correct is not as significant as the difference between answering zero or one questions correctly.    
+ 
+Turning our attention back to the figure, within each facet there is a clear correlation between level of tech literacy and distrust of a given group using facial recognition technology responsibly. Moreover, there is a clear ranking across the facets, regardless of tech literacy level, which trusts law enforcement to responsibly use facial recognition technology the most, tech companies the second most, and advertisers the least.
+ 
+The literacy-distrust correlation within each facet makes sense because those who know more about technology may be more aware of potential issues and pitfalls around facial recognition. Indeed, the converse is also true. Those who have no tech literacy likely have no technological domain knowledge and, as such, may at best have a superficial understanding of facial recognition.
+ 
+The ranking preference across the facets, however, is concerning. Many experts call for a ban of facial recognition use (Bennett, 2011) (Crawford, 2019). This does not line up with public opinion. From a perspective of a trust-distrust dichotomy, key figure 2 indicates that -- at best -- seems to be public support for regulation on tech companies and advertisers since a majority of respondents distrust them. Unfortunately, regulation of law enforcement use seems less likely as a majority of respondents, regardless of literacy level, trust them to use facial recognition responsibly.
+One possible explanation for the difference between expert opinion and public sentiment is that the respondents of the survey have a poor understanding of the limitations of facial recognition technology as seen in Additional figure 3 for key figure 2. They believe accurately identify people, assess gender, and assess race. They are incorrect  (Buolamwini & Gebru, 2018) (Crawford, 2019).
+
+## Bibliography 
+
+Bajpai, K., & Weber, K. (2017). Privacy in Public: Translating the Category of Privacy to the Digital Age. In *From Categories to Categorization: Studies in Sociology, Organizations and Strategy at the Crossroads* (Vol. 51, pp. 223–258). Emerald Publishing Limited. https://doi.org/10.1108/S0733-558X20170000051006
+
+Bennett, C. J. (2011). In further defence of privacy... *Surveillance & Society*, *8*(4), 513–516. http://dx.doi.org/10.24908/ss.v8i4.4189
+
+Buolamwini, J., & Gebru, T. (2018). *Gender Shades: Intersectional Accuracy Disparities in Commercial Gender Classiﬁcation*. 15. http://proceedings.mlr.press/v81/buolamwini18a/buolamwini18a.pdf
+
+Buttarelli, G. (2018). Big Tech Is Still Violating Your Privacy. *New Perspectives Quarterly*, *35*(4), 13–16. https://doi.org/10.1111/npqu.12169
+
+Chenou, J.-M., & Radu, R. (2019). The “Right to Be Forgotten”: Negotiating Public and Private Ordering in the European Union. *Business & Society*, *58*(1), 74–102. https://doi.org/10.1177/0007650317717720
+
+Crawford, K. (2019). Halt the use of facial-recognition technology until it is regulated. *Nature*, *572*(7771), 565–565. https://doi.org/10.1038/d41586-019-02514-7
+
+Seubert, S., & Becker, C. (2019). The culture industry revisited: Sociophilosophical reflections on ‘privacy’ in the digital age. *Philosophy & Social Criticism*, *45*(8), 930–947. https://doi.org/10.1177/0191453719849719
+
+Silverman, J. (2017). Privacy under Surveillance Capitalism. *Social Research*, *84*(1), 147–164.
+
+Smithsimon, M. (2003, Winter). Private Lives, Public Spaces: The Surveillance State. *Dissent*, *50*(1), 43.
+
+Snow, J. (2018, July 26). *Amazon’s Face Recognition Falsely Matched 28 Members of Congress With Mugshots*. American Civil Liberties Union. https://www.aclu.org/blog/privacy-technology/surveillance-technologies/amazons-face-recognition-falsely-matched-28
+
+Zuboff, S. (2019). *The age of surveillance capitalism: The fight for a human future at the new frontier of power* (First edition). PublicAffairs.
 
 
 \pagebreak
