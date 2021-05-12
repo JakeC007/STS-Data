@@ -1,7 +1,7 @@
 ---
-title: "Submission"
+title: "Final Project Submission"
 author: "Jake Chanenson and Adriana Knight"
-date: "5/7/2021"
+date: "5/12/2021"
 output: pdf_document
 ---
 
@@ -65,7 +65,6 @@ BLAH BLAH
 ## Key Figure 2
 
 ```{r FACE3, echo= echoval, message=FALSE}
-#TODO: deal with POS fig.cap = "Key Figure 2", fig.pos = "!H"
 ###Data Manipulation###
 ## Create df of FACE3
 df_f3 <- pew %>% filter(FACE3a_W49 != "No Answer" & FACE3b_W49 != "No Answer" & FACE3c_W49 != "No Answer") %>% filter(FACE3a_W49 != "Refused" & FACE3b_W49 != "Refused" & FACE3c_W49 != "Refused") %>%  dplyr::select(c(FACE3a_W49, FACE3b_W49, FACE3c_W49, groupKnow))
@@ -212,7 +211,7 @@ pew %>% drop_na(PUBLICDATA_W49) %>% filter(PUBLICDATA_W49 != "Refused") %>% ggpl
 
 ```{r kf1-appendix-2, echo=echoval}
 pew %>% drop_na(sumRTBF) %>% ggplot(aes(x = sumRTBF)) +
-  geom_histogram(binwidth = 1, fill = "#a3d9b5") +
+  geom_histogram(binwidth = 1, fill = "#a3d9b5", color = 'black') +
   labs (
     title = "Histogram of RTBF",
     subtitle = "How much do people think we have the right to forget?",
@@ -371,7 +370,7 @@ plot(likert(df_f2[,c(1:3)], grouping = df_f2.reverse[,4]), legend.position="righ
 ```
 
 
-### 4. What Situations Respondent Think It Is Acceptable To Use Facial Recognition
+### 4. What Situations Respondents Think It Is Acceptable To Use Facial Recognition
 
 ```{r FACE4_Likert, echo=echoval, message=FALSE}
 df_f4 <- pew %>% select(c(FACE4a_W49, FACE4b_W49, FACE4c_W49, FACE4d_W49, groupKnow))
@@ -451,7 +450,47 @@ knitr::kable(KFT_T2, "simple", caption = "Numeric Summary That Involves Uncertai
 
 **Key Figure 1**
 
+By grouping the data by `PUBLICDATA_W49` results and running an ANOVA test on each group’s `sumRTBF` count variables, we are able to say with extremely high confidence (on a P-value that is extremely close to 0 with a value of `2e-16`) that there is a statistically significant difference between public and private data oriented respondents in the average number of categories of data they deem worthy of falling under the Right to Be Forgotten.
+
+```{r KF1_Anova, echo = echoval}
+rtbf_anova <- aov(sumRTBF ~ PUBLICDATA_W49, data = pew)
+summary(rtbf_anova)
+```
+
+I would like to introduce one small caveat that does not delegitimize these findings, but does complicate them slightly. Due to the nature of the dummy variable `sumRTBF`, we may know how many categories, on average, respondents identify as being worthy of protection. However, we do not know *which* categories the respondents select. There are sixteen^[calculated using combinatorics: `(4 choose 0) + (4 choose 1) + (4 choose 2) + (4 choose 3) + (4 choose 4) = 16`] possible ways a respondent could answer the four Right to Be Forgotten questions. We know with certainty that participating respondents demonstrated trends in how many categories chosen, but we do *not* know with certainty if there are trends in *which* categories respondents chose. 
+
+
+
 **Key Figure 2**
+
+Using a 1-way ANOVA test on each of the three facets in key figure 2 -- Law Enforcement's Use Of Facial Recognition, Tech Companies' Use Of Facial Recognition, and Advertisers' Use Of Facial Recognition -- we are able to say with extremely high confidence (on a P-value that is extremely close to 0 with a value of `1.66e-14`, `5.37e-11`, and `<2e-16` respectively) that there is a statistically significant difference in the responses of those categorized as No Literacy Some Literacy High Literacy in all three facets!
+
+```{r KF2_Anova, echo = echoval}
+##Run ANOVA Tests
+## Literacy level is the FACTOR
+## H_{0}: No Literacy = Some Literacy = High Literacy for their trust in each group 
+KF2_anova_law <- aov(as.numeric(FACE3c_W49) ~ groupKnow, data = pew)
+KF2_anova_tech <- aov(as.numeric(FACE3b_W49) ~ groupKnow, data = pew)
+KF2_anova_ad <- aov(as.numeric(FACE3a_W49) ~ groupKnow, data = pew)
+```
+
+*ANOVA Summary For Law Enforcement's Use Of Facial Recognition*
+```{r KF2_Anova_Law, echo = echoval}
+##Generate Summary
+summary(KF2_anova_law)
+```
+
+*ANOVA Summary For Tech Companies' Use Of Facial Recognition*
+```{r KF2_Anova_Tech, echo = echoval}
+##Generate Summary
+summary(KF2_anova_tech)
+```
+
+*ANOVA Summary For Advertisers' Use Of Facial Recognition*
+```{r KF2_Anova_Ad, echo = echoval}
+##Generate Summary
+summary(KF2_anova_ad)
+```
 
 ### Discussion of Analytic  Choices
 
@@ -466,7 +505,6 @@ In that regard we are guilty, also, of using this data as a means of making some
 The last point of contention or concern within our analysis of our data is the constantly shifting landscape of digital literacy as a whole. We are still only a few mere decades into the digital age, meaning that there is a notable generational gap in literacy, skill sets, and general understanding of the tools offered and threats posed by the digital sphere. One of our visuals does aim to gauge technical literacy, using a dummy summary count variable, though we are cautious to take it as the unchallenged truth. For those and other variables, respondents may feign understanding of topics, or answer in line to how they think they should. As such, we can at best be only cautiously optimistic about the results our analyses yield, knowing that our variables are at best approximations, and we are representing not the hypothetical, homogenous “public” but rather a pre-selected sample group.
 
 Moving into our *visual* analyses, we turn to Healy, particularly the ideals outlined within chapters 1 and 8. Based on those readings, we took great pain thinking about presentation and accessibility in our design. The primary sins of bad design, as Healy describes them, are bad taste, bad perception, and bad data. We have done our best to address the source of data for analysis already above, and by no means cherry picked our data to further a narrative that we would prefer to tell over the one the data produced with our manipulations. For the first two, we have done our best to present the information in as clear and concise a way as we could manage. Leaning into ideas from chapter 8, we wanted to maintain not only high quality of visuals (no wasted ink, clear and regular visuals) but also accessibility. We used pre-built color palettes to display our data - sequential color palettes for unordered categorical data and diverging color palettes for ordered categorical data. In addition, it was important that we make sure our visuals were widely accessible by identifying color-blind friendly palates in colorbrewer via `display.brewer.all(colorblindFriendly = TRUE)` to select palettes that would work even for those with different abilities or perceptions. Our goal was to keep our color palette and our visual decisions at large consistent with the underlying data, visually pleasing, and accessible to all.
-
 
 ### Discussion Of Other Ways We Could Have Made Our Key Figure
 
@@ -501,6 +539,8 @@ This visualization does both things that I would like it to do: it makes immedia
 When visualizing my key figure, I knew that I wanted to visualize some form of stacked bar chart to communicate the relative differences in comfort of various groups using facial recognition technology. Professor Ella Foster-Molina sent me an excellent article from Datawrapper making the case against diverging stacked bar charts and offering 100% stacked bar charts as the better alternative. The article argues that “the main problem with diverging bars, however, is comparability.” On the whole, I agree; to me, the most compelling point of the piece relates to how neutrals are handled in the diverging stacked bar charts. Putting neutrals in the middle means that (1) none of the bars have a common baseline and (2) the chart is implying that part of the neutrals should be coded as positive and negative respectively. These issues are massively detrimental to making a visualization that is both easy to understand and not misleading. So, in general, the 100% stacked bar chart is the superior choice when visualizing Likert data.
 That all being said, none of my charts have neutrals. Thus, I think the diverging bar chart looks just fine because the overall positive-negative trend both within and between facets is more pronounced. Below is what the figure would look like with a 100% stacked bar chart.
 
+Link to Datawrapper article: https://blog.datawrapper.de/divergingbars/
+
 ```{r FACE3 Alt, echo=echoval, message=FALSE}
 ## 100% BarPlot
 plot(likert(df_f3[,c(1:3)], grouping = df_f3.reverse[,4]), legend.position="right", centered = FALSE, plot.percents=TRUE, plot.percent.low=FALSE, plot.percent.high=FALSE, plot.percent.neutral=FALSE, center = 2.5) + 
@@ -509,10 +549,6 @@ plot(likert(df_f3[,c(1:3)], grouping = df_f3.reverse[,4]), legend.position="righ
   labs(caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
   guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
 ```
-
-### Bibliography
-
-WE HAVE THE CITES I'll plot this in later - JC
 
 ### Distribution of Work
 

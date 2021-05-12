@@ -88,6 +88,12 @@ pew <- pew %>% mutate(groupKnow = ifelse(sumKnowFactor == 0, yes = "No Literacy"
                                    ifelse(sumKnowFactor == 1| sumKnowFactor == 2| sumKnowFactor == 3| sumKnowFactor == 4, yes = "Some Literacy", no = "High Literacy")),
                groupKnow = as_factor(groupKnow),
                .after = sumKnowFactor)
+
+###groupKnowNum - for ANOVA test###
+pew <- pew %>% mutate(groupKnowNum = ifelse(groupKnow == "No Literacy", 1,
+                                     ifelse(groupKnow == "Some Literacy", 2, 3)),
+                      .after = groupKnow
+                      ) 
 ```
 
 
