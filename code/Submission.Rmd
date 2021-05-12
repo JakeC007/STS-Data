@@ -40,11 +40,11 @@ levels(pew$PUBLICDATA_W49) <- c("More Important To Find Others' Information","Mo
 pew %>% drop_na(PUBLICDATA_W49) %>% drop_na(sumRTBF) %>% filter(PUBLICDATA_W49 != "Refused") %>% ggplot(aes(x = sumRTBF, fill = as.factor(sumRTBF))) +
   geom_bar(position = "dodge", color = 'black') +
   labs (
-    title = "Attitudes on How Many Categories of Data Should Be Protected by\n\"The Right To Be Forgotten\" Split by Stance on Personal Data Use",
+    title = "Key Figure 1:",
+    subtitle = "Attitudes on How Many Categories of Data Should Be Protected by\n\"The Right To Be Forgotten\" Split by Stance on Personal Data Use",
     x = "How many of the following categories fall under the Right to Be Forgotten?\n-Data collected by law enforcement   -Employment history or work record\n   -Negative media coverage   -Potentially embarassing photos or videos",
     y = "",
-    caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"
-  ) +
+    caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
   scale_fill_brewer(palette="YlGnBu") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
@@ -92,36 +92,34 @@ df_f3.reverse <- reverse.levels(df_f3)
 
                             
 ## Generate Title
-title2 <- "Trust In Responsible Use Of Facial Recognition Tech\nFaceted on Tech Literacy"
+title2 <- "Trust In Responsible Use Of Facial Recognition Tech\nGrouped By Tech Literacy"
 
 ###Data Viz###
 ## Centerd, No Percents 
 plot(likert(df_f3.reverse[,c(1:3)], grouping = df_f3.reverse[,4]), legend.position="right", centered = TRUE, plot.percents=TRUE, plot.percent.low=FALSE, plot.percent.high=FALSE, plot.percent.neutral=FALSE, center = 2.5) + 
   scale_fill_manual(values = brewer.pal(n=4,"RdBu"), breaks = c("Not at all", "Not too much", "Somewhat", "A great deal")) + #order and color the likert boxes
   ggtitle(title2) +
-  labs(caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
+  labs(title = "Key Figure 2:",
+    subtitle = title2,
+    caption = "This graph shows a representative sample of the US population’s trust in the\nresponsible use of facial recognition across three different groups.\nIt is clear to see that people trust law enforcement even though law enforcement\nboth has a history of abusing facial recognition technology\n and that current facial recognition systems\n are highly flawed and struggle to accurately identify people of color.\n\nData sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
   guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
+
 ```
 
-
 ### Explanation of Key Figure 2
-From a purely theoretical point of view, facial recognition technology represents a huge privacy risk to the general public. Any image -- be it a photo posted online or a single frame taken from a public CCTV camera -- can be used to accurately identify any individual by simply running a facial recognition program. Currently, if someone wants to reliably identify a person, they either have seen their face beforehand or they need to manually match to a known face in a face-identity repository. Facial recognition removes the former limitation and speeds up the latter exponentially by searching for a match in hundreds of thousands of faces extremely quickly (Venema, 2020). As a result, one’s anonymity is eroded away as there are multitudes of cameras in urban spaces (Smithsimon, 2003) whose data can be fed to a facial recognition system .
+Current facial recognition systems are far from accurate and are plagued with issues of bias in their datasets (Buolamwini & Gebru, 2018). These systems are built to search for a match in hundreds of thousands of faces extremely quickly (Venema, 2020), however, they are trained to recognize primarily white, cisgender male faces -- meaning that they perform poorly on everyone else. Indeed, to highlight this issue, the ACLU ran the faces of the 115th United States Congress through Amazon’s off the shelf facial recognition tool called “Rekognition.” Amazon Rekognition identified 28 members of Congress as “other people who have been arrested for a crime.” Of those false matches “40 percent…were of people of color, even though they make up only 20 percent of Congress” (Snow, 2018).
  
-When we reify the issue of facial recognition technology by limiting it to the capabilities of current technological systems, the risk posed by facial recognition adds a new level of dimensionality. Current facial recognition systems are far from accurate and are plagued with issues of bias in their datasets (Buolamwini & Gebru, 2018). These systems are trained to recognize primarily white, cisgender male faces -- meaning that they perform poorly on everyone else. Indeed, to highlight this issue, the ACLU ran the faces of the 115th United States Congress through Amazon’s off the shelf facial recognition tool called “Rekognition.” Amazon Rekognition identified 28 members of Congress as “other people who have been arrested for a crime.” Of those false matches“40 percent…were of people of color, even though they make up only 20 percent of Congress” (Snow, 2018).
+In short, facial recognition in the early 21st century is a highly flawed tool that outputs racist results and is a threat to the privacy of the general public. Currently, there is no national regulation of facial recognition technology (Crawford, 2019). However, public opinion of facial recognition technology can shape policy which can lead to privacy protections. It is therefore vitally important to understand how public opinion differs for various groups using facial recognition technology.   
  
-In short, facial recognition in the early 21st century is a highly flawed tool that outputs racist results and is a threat to the privacy of the general public. Currently, there is no national regulation of facial recognition technology (Crawford, 2019). However, public opinion of facial recognition technology can shape policy which can lead to privacy protections. This is why key figure 2 is important because it sheds light on how much trust a (somewhat) representative sample of the American people have in different groups using facial recognition technology.   
- 
-Rather than just display the preexisting results from the Likert scale in the Pew survey, we decided to partition the data based off of how knowledgeable the respondent was about technology. The Pew survey had ten questions assessing each respondent’s knowledge on topics ranging from what the ‘s’ in ‘https’ means to how social media platforms generate revenue. Four of these questions -- “Which of the following is the largest source of revenue for most major social media platforms?”, “Where might someone encounter a phishing scam?”, “Which two companies listed below are both owned by Facebook?”, and a question asking respondents to identify a picture of Twitter co-founder Jack Dorsey -- were excluded because they were not directly related to measuring a respondent’s knowledge of how technology worked on a technical or legal level. Thus, each respondent received a literacy score between zero and six; this score was the sum of the number of questions the respondent answered correctly. Additional figure 1 for key figure 2 visualizes the underlying distribution of literacy scores.  
- 
-The literacy scores are then binned into three levels -- “No Literacy,” “Some Literacy,” and “High Literacy” -- because visualizing all six levels had a poor data-to-ink ratio. The category of “No Literacy” consists solely of respondents who scored a zero out of 6, the category of Some Literacy consists of respondents whose scores ranged from a two out of six to a four out of six, and the category of High Literacy consists of respondents who scored either a five out of six or six out of six. Additional figure 2 for key figure 2 visualizes how the literacy scores are encapsulated by the binning. 
-After a cursory glance it is clear to see that this binning scheme puts an emphasis on those who knew nothing about the technical and legal aspects of technology. We felt that this was important to highlight because those who have no literacy are numerous and likely have a different perspective than those who have some tech literacy. We choose not to put an emphasis on those with a perfect score because the six questions we have to compute a tech literacy score measure a limited scope of knowledge and the difference between getting five or six questions correct is not as significant as the difference between answering zero or one questions correctly.    
+Rather than just display the preexisting results from the Likert scale in the Pew survey, we decided to partition the data based off of how knowledgeable the respondent was about technology; in other words, we quantified their tech literacy. An in-depth explanation about how and why this tech literacy variable was created can be found with the accompanying explanation of additional figure 1 for key figure 2.  
  
 Turning our attention back to the figure, within each facet there is a clear correlation between level of tech literacy and distrust of a given group using facial recognition technology responsibly. Moreover, there is a clear ranking across the facets, regardless of tech literacy level, which trusts law enforcement to responsibly use facial recognition technology the most, tech companies the second most, and advertisers the least.
  
 The literacy-distrust correlation within each facet makes sense because those who know more about technology may be more aware of potential issues and pitfalls around facial recognition. Indeed, the converse is also true. Those who have no tech literacy likely have no technological domain knowledge and, as such, may at best have a superficial understanding of facial recognition.
  
-The ranking preference across the facets, however, is concerning. Many experts call for a ban of facial recognition use (Bennett, 2011) (Crawford, 2019). This does not line up with public opinion. From a perspective of a trust-distrust dichotomy, key figure 2 indicates that -- at best -- seems to be public support for regulation on tech companies and advertisers since a majority of respondents distrust them. Unfortunately, regulation of law enforcement use seems less likely as a majority of respondents, regardless of literacy level, trust them to use facial recognition responsibly.
-One possible explanation for the difference between expert opinion and public sentiment is that the respondents of the survey have a poor understanding of the limitations of facial recognition technology as seen in Additional figure 3 for key figure 2. They believe accurately identify people, assess gender, and assess race. They are incorrect  (Buolamwini & Gebru, 2018) (Crawford, 2019).
+The ranking preference across the facets, however, is concerning. Many experts call for a ban of facial recognition use (Bennett, 2011) (Crawford, 2019) because they do not trust that the technology can be used responsibly by any party. This does not line up with public opinion. From a perspective of a trust-distrust dichotomy, key figure 2 indicates that a majority of respondents only have an overwhelming distrust of advertisers. In addition, the respondents on the whole have more distrust than trust for tech companies to use facial recognition responsibly with the respondents with no tech literacy dead even with 50% trust and 50% distrust. The most concerning finding here, however, is that the majority of respondents, regardless of literacy level, trust law enforcement to use facial recognition responsibly. This is very concerning as law enforcement both has a history of abusing facial recognition technology (Devich-Cyril, 2020) and that, as mentioned above, current facial recognition systems are highly flawed and struggle to accurately identify people of color. This glut of trust for law enforcement – especially as compared to the dearth of trust for advertisers -- could indicate a relative unwillingness to regulate law enforcement’s use of facial recognition technology. 
+One possible explanation for the difference between expert opinion and public sentiment is that the respondents of the survey have a poor understanding of the limitations of facial recognition technology as seen in Additional figure 3 for key figure 2. They believe accurately identify people, assess gender, and assess race. They are incorrect (Buolamwini & Gebru, 2018) (Crawford, 2019).
+
 
 ## Bibliography 
 
@@ -137,11 +135,11 @@ Chenou, J.-M., & Radu, R. (2019). The “Right to Be Forgotten”: Negotiating P
 
 Crawford, K. (2019). Halt the use of facial-recognition technology until it is regulated. *Nature*, *572*(7771), 565–565. https://doi.org/10.1038/d41586-019-02514-7
 
+Devich-Cyril, M. (2020, July 5). *Defund Facial Recognition*. The Atlantic. https://www.theatlantic.com/technology/archive/2020/07/defund-facial-recognition/613771/
+
 Seubert, S., & Becker, C. (2019). The culture industry revisited: Sociophilosophical reflections on ‘privacy’ in the digital age. *Philosophy & Social Criticism*, *45*(8), 930–947. https://doi.org/10.1177/0191453719849719
 
 Silverman, J. (2017). Privacy under Surveillance Capitalism. *Social Research*, *84*(1), 147–164.
-
-Smithsimon, M. (2003, Winter). Private Lives, Public Spaces: The Surveillance State. *Dissent*, *50*(1), 43.
 
 Snow, J. (2018, July 26). *Amazon’s Face Recognition Falsely Matched 28 Members of Congress With Mugshots*. American Civil Liberties Union. https://www.aclu.org/blog/privacy-technology/surveillance-technologies/amazons-face-recognition-falsely-matched-28
 
@@ -168,6 +166,7 @@ sampling. I have copied the statement from the methodology section below:
 > The ATP subsample was selected by grouping panelists into seven stratum 1. Non-internet panelists. There were 691 total panelists in this stratum and they are sampled at a rate of 100% 2. HS or less panelists. There were 2,027 total panelists in this stratum and they are sampled at a rate of 98.9%. 2,005 panelists were selected for Wave 49. 3. Hispanic, Unregistered or Non-volunteers. There were 5,312 total panelists in this stratum and they are sampled at a rate of 44.8%. 2,380 panelists were selected for Wave 49. 4. Black or 18-34 panelists. There were 1,253 total panelists and they are sampled at a rate of 18.2%. 228 panelists were selected for Wave 49. 5. Other panelists. There were 4,176 total panelists and they are sampled at a rate of 13.5%. 564 panelists were selected for Wave 49.
 
 #### Variables Used and Their Questions Phrasing
+
 
 
 **Key Figure 1**
@@ -245,8 +244,9 @@ pew %>% drop_na(PUBLICDATA_W49) %>% filter(PUBLICDATA_W49 != "Refused") %>% ggpl
     subtitle = "Do you think it is more important for people to have the ability to...",
     x = "Responses",
     y = "Counts",
-    caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"
-  ) + theme(panel.grid.major = element_blank(),
+       caption = c("Additional Figure 1\nFor Key Figure 1",  "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"))+
+  theme(plot.caption = element_text(hjust=c(0, 1))) + 
+  theme(panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
             panel.background = element_blank(), 
             axis.line = element_line(colour = "black"))
@@ -262,8 +262,9 @@ pew %>% drop_na(sumRTBF) %>% ggplot(aes(x = sumRTBF)) +
     subtitle = "How much do people think we have the right to forget?",
     x = "Number of acceptable categories to forget",
     y = "Count",
-    caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"
-  ) + theme(panel.grid.major = element_blank(),
+       caption = c("Additional Figure 2\nFor Key Figure 1",  "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"))+
+  theme(plot.caption = element_text(hjust=c(0, 1))) +
+  theme(panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
             panel.background = element_blank(), 
             axis.line = element_line(colour = "black"))
@@ -350,14 +351,18 @@ pew %>% ggplot(aes(x =sumKnowFactor, fill = groupKnow)) +
     y = "Counts",
     x = "Literacy Category",
     fill = "Respondent's\nLiteracy Score",
-    caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"
-  ) +  
+       caption = c("Additional Figure 1\nFor Key Figure 2",  "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"))+
+  theme(plot.caption = element_text(hjust=c(0, 1))) + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
 ```
 
+We decided to create a dummy variable that reflected how knowledgeable the respondent was about technology. The Pew survey had ten questions assessing each respondent’s knowledge on topics ranging from what the ‘s’ in ‘https’ means to how social media platforms generate revenue. Four of these questions -- “Which of the following is the largest source of revenue for most major social media platforms?”, “Where might someone encounter a phishing scam?”, “Which two companies listed below are both owned by Facebook?”, and a question asking respondents to identify a picture of Twitter co-founder Jack Dorsey -- were excluded because they were not directly related to measuring a respondent’s knowledge of how technology worked on a technical or legal level. Thus, each respondent received a literacy score between zero and six; this score was the sum of the number of questions the respondent answered correctly. The above figure, additional figure 1 for key figure 2, visualizes the underlying distribution of literacy scores.  
+ 
+The literacy scores are then binned into three levels -- “No Literacy,” “Some Literacy,” and “High Literacy” -- because visualizing all six levels had a poor data-to-ink ratio. The category of “No Literacy” consists solely of respondents who scored a zero out of 6, the category of Some Literacy consists of respondents whose scores ranged from a two out of six to a four out of six, and the category of High Literacy consists of respondents who scored either a five out of six or six out of six. The color in the above figure visualizes how the literacy scores are encapsulated by the binning. 
 
+After a cursory glance it is clear to see that this binning scheme puts an emphasis on those who knew nothing about the technical and legal aspects of technology. We felt that this was important to highlight because those who have no literacy are numerous and likely have a different perspective than those who have some tech literacy. We choose not to put an emphasis on those with a perfect score because the six questions we have to compute a tech literacy score measure a limited scope of knowledge and the difference between getting five or six questions correct is not as significant as the difference between answering zero or one questions correctly.    
 
 
 ### 2. Self Reported Facial Recognition Familiarity
@@ -371,8 +376,8 @@ pew %>% filter(FACE1_W49 != "Refused") %>% ggplot(aes(x = groupKnow, fill = FACE
     y = "Counts",
     x = "Literacy Category",
     fill = "How Much The Respondent\nKnows About Facial Recognition",
-    caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"
-  ) +  
+       caption = c("Additional Figure 2\nFor Key Figure 2",  "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"))+
+  theme(plot.caption = element_text(hjust=c(0, 1))) + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 ```
@@ -397,20 +402,22 @@ df_f2.reverse <- reverse.levels(df_f2)
 
                             
 ## Generate Title
-titlef2 <- "How Effective Do Respondents Think Facial Recognition Is\nFaceted on Tech Literacy"
+titlef2 <- "How Effective Do Respondents Think Facial Recognition Is\nGrouped By Tech Literacy"
 
 ###Graph The Likert Data###
 plot(likert(df_f2.reverse[,c(1:3)], grouping = df_f2.reverse[,4]), legend.position="right", centered = TRUE, plot.percents=TRUE, plot.percent.low=FALSE, plot.percent.high=FALSE, plot.percent.neutral=FALSE, center = 2.5) + 
   scale_fill_manual(values = brewer.pal(n=4,"RdBu"), breaks = rev(levels(df_f2$`Accurately identifying individual people`))) + #order and color the likert boxes
   ggtitle(titlef2) +
-    labs(caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
+    labs(caption = c("Additional Figure 3\nFor Key Figure 2",  "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"))+
+  theme(plot.caption = element_text(hjust=c(0, 1))) +
   guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
 
 ##100 Pcnt bar chart
 plot(likert(df_f2[,c(1:3)], grouping = df_f2.reverse[,4]), legend.position="right", centered = FALSE, plot.percents=TRUE, plot.percent.low=FALSE, plot.percent.high=FALSE, plot.percent.neutral=FALSE, center = 2.5) + 
   scale_fill_manual(values = brewer.pal(n=4,"RdBu"), breaks = rev(levels(df_f2$`Accurately identifying individual people`))) + #order and color the likert boxes
   ggtitle(titlef2) +
-    labs(caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
+    labs(caption = c("Additional Figure 3.5\nFor Key Figure 2",  "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"))+
+  theme(plot.caption = element_text(hjust=c(0, 1))) +
   guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
 ```
 
@@ -433,20 +440,22 @@ df_f4 <- droplevels(df_f4)
 df_f4.reverse <- reverse.levels(df_f4)
 df_f4.reverse2 <- reverse.levels(df_f4.reverse) #R wackyness reverse takes away NA so to get fd_f4 without NA we need to reverse the reverse
 
-titlef4 <- "Opinions on Facial Recognition Use Faceted on Tech Litercay"
+titlef4 <- "Opinions on Facial Recognition Use Grouped By Tech Litercay"
 
 ###Graph The Likert Data###
 plot(likert(df_f4.reverse[,c(1:4)], grouping = df_f4.reverse[,5]), legend.position="right", plot.percents=FALSE, plot.percent.low=FALSE, plot.percent.high=FALSE, plot.percent.neutral=FALSE, center = 1.5) +
   scale_fill_manual(values = brewer.pal(n=4,"RdBu"), breaks = c("NA", "Not sure", "Unacceptable", "Acceptable")) + #order and color the likert boxes
   ggtitle(titlef4) +
-    labs(caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
+    labs(caption = c("Additional Figure 4\nFor Key Figure 2",  "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"))+
+  theme(plot.caption = element_text(hjust=c(0, 1))) +
   guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
 
 ##100 Pcnt bar chart
 plot(likert(df_f4.reverse2[,c(1:4)], grouping = df_f4.reverse[,5]), legend.position="right", centered = FALSE, plot.percents=FALSE, plot.percent.low=FALSE, plot.percent.high=FALSE, plot.percent.neutral=FALSE,) +
   scale_fill_manual(values = brewer.pal(n=4,"RdBu"), breaks = c("NA", "Not sure", "Unacceptable", "Acceptable")) + #order and color the likert boxes
   ggtitle(titlef4) +
-    labs(caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
+    labs(       caption = c("Additional Figure 4.5\nFor Key Figure 2",  "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"))+
+  theme(plot.caption = element_text(hjust=c(0, 1))) +
   guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
 ```
 
@@ -544,7 +553,7 @@ Our analytical choices, while earnestly centered around most accurately represen
 
 Per Pierre Bourdieu’s article “Public Opinion Does Not Exist,” our primary critique of the analytic choices that both we and the source of our data set (the Pew Research Center) made is that we are relying heavily on the survey data yielded by the 2019 Pew American Trends Panel survey as being accurately representative of “the public.”
 
-First, to echo Bourdieu’s writings, we would like to problematize our use of the idea of “the public” at all; the data we have been manipulating, and the visualizations produced therein, are by no means necessarily representative of “the public.” The public, as we would like to think of it, does not exist. Per the topline we received as part of this data set, the *actual* body of people surveyed is 5,869 members of the American Trends Panel: a national, probability-based online panel of non-institutionalized adults living in households in the United States, including Alaska and Hawaii. The fact that this is a pre-selected, probability-based panel highlights that the body of participants does not encompass every single person living in the United States, nor does every person living in the United States who interacts in some meaningful way with technology and digital privacy fall under those categorizations. Pew Research Center is a meticulous, thorough group known for producing robust data as well as analyses of said data. Though, there will always be blind spots, which we must be mindful of when discussing* what* exactly our work produced.
+First, to echo Bourdieu’s writings, we would like to problematize our use of the idea of “the public” at all; the data we have been manipulating, and the visualizations produced therein, are by no means necessarily representative of “the public.” The public, as we would like to think of it, does not exist. Per the topline we received as part of this data set, the *actual* body of people surveyed is 5,869 members of the American Trends Panel: a national, probability-based online panel of non-institutionalized adults living in households in the United States, including Alaska and Hawaii. The fact that this is a pre-selected, probability-based panel highlights that the body of participants does not encompass every single person living in the United States, nor does every person living in the United States who interacts in some meaningful way with technology and digital privacy fall under those categorizations. Pew Research Center is a meticulous, thorough group known for producing robust data as well as analyses of said data. Though, there will always be blind spots, which we must be mindful of when discussing *what* exactly our work produced.
 
 In that regard we are guilty, also, of using this data as a means of making some grand statement about the status of society as a means of gauging “where we are” in regard to digital privacy. Bourdieu writes that “[the public opinion poll] creates the idea that a unanimous public opinion exists in order to legitimate a policy, and strengthen the relations of the force upon which it is based or make it possible” (Bourdieu 125). Not every person has or is even *able* to produce an opinion on every single question posed by the survey; this much is proved by the sheer volume of NAs in response to certain questions. We also do not know *what* those NAs even mean; Bourdieu defines the “consensus effect” to be the tendency to overlook the proportion of respondents who gave “no reply” homogenizes the populus and ignores the political reasons for certain demographics to not respond depending on the variety of question. We do not know, truly, what those NAs mean; we made the decision to largely strike them from our visualizations to help tell a better story, but that narrative in turn excludes some body whose voices we neither know nor understand, which could in turn shift our general understanding of the field of digital privacy as a whole. 
 
@@ -556,11 +565,11 @@ Moving into our *visual* analyses, we turn to Healy, particularly the ideals out
 
 **Key Figure 1**
 
-As I emphasized in the original text introducing my image, there were two factors that I found it extremely important to accurately represent within my visual examining respondents’ stance on digital privacy and personal data: the scale of the difference between counts for the two binary options to `PUBLICDATA_W49`, and the internal distribution for each of those two categories of respondents on the issue of the Right to Be Forgotten. 
+As we emphasized in the original text introducing key figure 1, there were two factors that we found it extremely important to accurately represent within our visual examining respondents’ stance on digital privacy and personal data: the scale of the difference between counts for the two binary options to `PUBLICDATA_W49`, and the internal distribution for each of those two categories of respondents on the issue of the Right to Be Forgotten. 
 
-I chose fairly quickly to forgo what I would think of as the “reverse” of my final visual: a faceted bar chart broken up by the four categories of information that the survey proposed as falling under the Right to Be Forgotten, showing the breakdown of each category of data’s response along the lines of those who prefer public versus private data. Though this visualization would have the advantage of showing a finer-grained understanding of the Right to Be Forgotten (showing each category directly rather than using a dummy variable of sum counts, as I ultimately did) it ultimately did not reveal anything new or interesting about the `PUBLICDATA_W49` responses. Every single response of counts only reflected the same relationship between public and private stances. This helped me narrow down my work to try and prioritize showing internal distinctions between those two categories instead.
+We chose fairly quickly to forgo what we would think of as the “reverse” of our final visual: a faceted bar chart broken up by the four categories of information that the survey proposed as falling under the Right to Be Forgotten, showing the breakdown of each category of data’s response along the lines of those who prefer public versus private data. Though this visualization would have the advantage of showing a finer-grained understanding of the Right to Be Forgotten (showing each category directly rather than using a dummy variable of sum counts, as we ultimately did) it ultimately did not reveal anything new or interesting about the `PUBLICDATA_W49` responses. Every single response of counts only reflected the same relationship between public and private stances. This helped us narrow down our work to try and prioritize showing internal distinctions between those two categories instead.
 
-A visualization that I considered, but rejected, is one which uses not a dodged bar chart but a stacked one, showing the two categories of public versus private data people as two bars and having those bars be partitioned accordingly to reflect the internal distribution of counts of categories that should be protected. This visualization looks as follows:
+A visualization that we considered, but rejected, is one which uses not a dodged bar chart but a stacked one, showing the two categories of public versus private data people as two bars and having those bars be partitioned accordingly to reflect the internal distribution of counts of categories that should be protected. This visualization looks as follows:
 
 ```{r central_fig_alt, echo = echoval}
 levels(pew$PUBLICDATA_W49) <- c("Find others'\ninformation","Keep their\nown information\nprivate", "Refused")
@@ -570,20 +579,20 @@ pew %>% drop_na(PUBLICDATA_W49) %>% drop_na(sumRTBF) %>% filter(PUBLICDATA_W49 !
     title = "Attitudes on How Many Categories of Data Should Be Protected by\n\"The Right To Be Forgotten\" by Stance on Personal Data",
     x = "Participants find it more important to...",
     y = "",
-    caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"
-  ) +
+    caption = c("Alternate Key\nFigure 2",  "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"))+
+  theme(plot.caption = element_text(hjust=c(0, 1))) +
   scale_fill_brewer(palette="YlGnBu", name = "How many of the following categories\nof data should fall under the Right To Be Forgotten:\n   -Data collected by law enforcement\n   -Employment history or work record\n   -Negative media coverage\n   -Potentially embarassing photos or\n     videos", labels=c("None","One","Two","Three","Four"))+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
         axis.line = element_line(colour = "black"))
 ```
-This visualization does both things that I would like it to do: it makes immediately apparent the difference in scale between those who prioritize public data versus private, and it has a clear color-coded breakdown of how many categories of data each class thinks should be protected. However, it is clunky and makes it harder to closely examine the distribution of sum counts than it is in my final graphic. As Healy breaks down, bad design is plagued by bad perception; stacking the boxes for each number makes it hard to directly compare the distribution of counts by not having a common base. This in turn warps our perception of the final data. So while this tells a similar story to the one up above, I ended up making additional aesthetic decisions to better convey that information in a clear and pleasing way.
+This visualization does both things that we would like it to do: it makes immediately apparent the difference in scale between those who prioritize public data versus private, and it has a clear color-coded breakdown of how many categories of data each class thinks should be protected. However, it is clunky and makes it harder to closely examine the distribution of sum counts than it is in our final graphic. As Healy breaks down, bad design is plagued by bad perception; stacking the boxes for each number makes it hard to directly compare the distribution of counts by not having a common base. This in turn warps our perception of the final data. So while this tells a similar story to the one up above, we ended up making additional aesthetic decisions to better convey that information in a clear and pleasing way.
 
 
 **Key Figure 2**
 
-When visualizing my key figure, I knew that I wanted to visualize some form of stacked bar chart to communicate the relative differences in comfort of various groups using facial recognition technology. Professor Ella Foster-Molina sent me an excellent article from Datawrapper making the case against diverging stacked bar charts and offering 100% stacked bar charts as the better alternative. The article argues that “the main problem with diverging bars, however, is comparability.” On the whole, I agree; to me, the most compelling point of the piece relates to how neutrals are handled in the diverging stacked bar charts. Putting neutrals in the middle means that (1) none of the bars have a common baseline and (2) the chart is implying that part of the neutrals should be coded as positive and negative respectively. These issues are massively detrimental to making a visualization that is both easy to understand and not misleading. So, in general, the 100% stacked bar chart is the superior choice when visualizing Likert data.
-That all being said, none of my charts have neutrals. Thus, I think the diverging bar chart looks just fine because the overall positive-negative trend both within and between facets is more pronounced. Below is what the figure would look like with a 100% stacked bar chart.
+When visualizing key figure 2, I knew that I wanted to visualize some form of stacked bar chart to communicate the relative differences in comfort of various groups using facial recognition technology. Professor Ella Foster-Molina sent us an excellent article from Datawrapper making the case against diverging stacked bar charts and offering 100% stacked bar charts as the better alternative. The article argues that “the main problem with diverging bars, however, is comparability.” On the whole, we agree; the most compelling point of the piece relates to how neutrals are handled in the diverging stacked bar charts. Putting neutrals in the middle means that (1) none of the bars have a common baseline and (2) the chart is implying that part of the neutrals should be coded as positive and negative respectively. These issues are massively detrimental to making a visualization that is both easy to understand and not misleading. So, in general, the 100% stacked bar chart is the superior choice when visualizing Likert data.
+That all being said, none of my charts have neutrals. Thus, we think the diverging bar chart looks just fine because the overall positive-negative trend both within and between facets is more pronounced. Below is what the figure would look like with a 100% stacked bar chart.
 
 Link to Datawrapper article: https://blog.datawrapper.de/divergingbars/
 
@@ -592,13 +601,14 @@ Link to Datawrapper article: https://blog.datawrapper.de/divergingbars/
 plot(likert(df_f3[,c(1:3)], grouping = df_f3.reverse[,4]), legend.position="right", centered = FALSE, plot.percents=TRUE, plot.percent.low=FALSE, plot.percent.high=FALSE, plot.percent.neutral=FALSE, center = 2.5) + 
   scale_fill_manual(values = brewer.pal(n=4,"RdBu"), breaks = c("Not at all", "Not too much", "Somewhat", "A great deal")) + #order and color the likert boxes
   ggtitle(title2) +
-  labs(caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
+  labs(caption = c("Alternate Key Figure 2",  "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"))+
+  theme(plot.caption = element_text(hjust=c(0, 1))) +
   guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
 ```
 
 ### Distribution of Work
 
-Jake and Adriana are best of friends and have split the work evenly. [THIS IS A PLACEHOLDER].
+Jake and Adriana split the project evenly. While they both were the lead on their respective key figures, they shared code snippets, analytical choices, and design tips. Unless explicitly split by key figure, Adriana and Jake discussed and drafted each essay section of the appendix together while Adriana transformed the drafts into a well written final project. To keep the workload fair, Jake worked on debugging and formatting the final submission.
 
 ```{r, echo=F, message=FALSE}
 
