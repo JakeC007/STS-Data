@@ -38,7 +38,7 @@ Our physical and digital lives have been increasingly entwined during the first 
 ```{r central_fig, echo = echoval}
 levels(pew$PUBLICDATA_W49) <- c("More Important To Find Others' Information","More Important To Keep Their Own\nInformation Private", "Refused")
 pew %>% drop_na(PUBLICDATA_W49) %>% drop_na(sumRTBF) %>% filter(PUBLICDATA_W49 != "Refused") %>% ggplot(aes(x = sumRTBF, fill = as.factor(sumRTBF))) +
-  geom_bar(position = "dodge") +
+  geom_bar(position = "dodge", color = 'black') +
   labs (
     title = "Attitudes on How Many Categories of Data Should Be Protected by\n\"The Right To Be Forgotten\" Split by Stance on Personal Data Use",
     x = "How many of the following categories fall under the Right to Be Forgotten?\n-Data collected by law enforcement   -Employment history or work record\n   -Negative media coverage   -Potentially embarassing photos or videos",
@@ -508,7 +508,8 @@ I would like to introduce one small caveat that does not delegitimize these find
 
 **Key Figure 2**
 
-Using a 1-way ANOVA test on each of the three facets in key figure 2 -- Law Enforcement's Use Of Facial Recognition, Tech Companies' Use Of Facial Recognition, and Advertisers' Use Of Facial Recognition -- we are able to say with extremely high confidence (on a P-value that is extremely close to 0 with a value of `1.66e-14`, `5.37e-11`, and `<2e-16` respectively) that there is a statistically significant difference in the responses of those categorized as No Literacy Some Literacy High Literacy in all three facets!
+Using a 1-way ANOVA test on each of the three facets in key figure 2 -- Law Enforcement's Use Of Facial Recognition, Tech Companies' Use Of Facial Recognition, and Advertisers' Use Of Facial Recognition -- we are able to say with extremely high confidence (on a P-value that is extremely close to 0 with a value of `1.66e-14`, `5.37e-11`, and `<2e-16` respectively) that there is a statistically significant difference in the responses of those categorized as "No Literacy," "Some Literacy,
+and "High Literacy" in all three facets!
 
 ```{r KF2_Anova, echo = echoval}
 ##Run ANOVA Tests
@@ -597,7 +598,7 @@ plot(likert(df_f3[,c(1:3)], grouping = df_f3.reverse[,4]), legend.position="righ
 
 ### Distribution of Work
 
-Jake and Adriana are best of friends and have split the work evenly. [PLACEHOLDER].
+Jake and Adriana are best of friends and have split the work evenly. [THIS IS A PLACEHOLDER].
 
 ```{r, echo=F, message=FALSE}
 
