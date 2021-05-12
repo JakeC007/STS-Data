@@ -28,12 +28,9 @@ echoval <- F
 load("../../Pew/pewTech.RData")
 ```
 
-
-https://docs.google.com/document/d/1Omlr2cpmMBdgSE8haPFzKQSpPuO8OWO681qwiMvXYfk/edit
-
 ## Introduction 
 
-Our physical and digital lives have been increasingly entwined during the first two decades of the twenty first century. A direct consequence of this entailment is the advent of what social psychologist Shoshana Zuboff calls "Surveillance Capitalism" – an economic model where a user’s personal data is commodified for profit generation. The commodification of personal data comes at the cost of user privacy as companies hoover up any and all quantifiable metrics about a given user. As such, it is now more important than ever to understand how the American people feel about issues surrounding the use of their data and their privacy. We choose two aspects of digital privacy to focus on: public sentiment surrounding right to be forgotten (RTBF) -- a privilege for people to remove photos, documents, and videos of themselves from public internet search -- and the privacy threat of Facial Recognition Technologies.    
+Our physical and digital lives have been increasingly entwined during the first two decades of the twenty first century as we enter into the digital age. A direct consequence of this development is the advent of what social psychologist Shoshana Zuboff calls "Surveillance Capitalism" – an economic model where a user’s personal data is commodified for profit generation. The commodification of personal data comes at the cost of user privacy as companies hoover up any and all quantifiable metrics about a given user in an effort to serve them more ads and services that are tailored to them. As such, it is now more important than ever to understand how the American people feel about issues surrounding the use of their data and their privacy. We chose two aspects of digital privacy to focus on: public sentiment surrounding the Right to Be Forgotten (RTBF) -- a privilege for people to remove photos, documents, and videos of themselves from public internet search -- and the privacy threat of Facial Recognition Technologies.
 
 
 ## Key Figure 1
