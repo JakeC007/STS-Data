@@ -13,16 +13,12 @@ library(ggplot2)
 library(colorspace)   #better colors for ggplot
 library(tidyverse)    
 library(dplyr)
+library(grid)
 library(gridExtra)
-library(viridis)
-library(ggridges)
 library(broom)
-library(stargazer)
-library(corrr)
 library(GGally)
 library(RColorBrewer)
-library(grid)
-library(likert) # for creating a likert plot
+library(likert) #for creating a likert plot
 library(kableExtra) # not needed but makes the table nicer
 echoval <- F
 load("../../Pew/pewTech.RData")
@@ -101,7 +97,8 @@ plot(likert(df_f3.reverse[,c(1:3)], grouping = df_f3.reverse[,4]), legend.positi
   ggtitle(title2) +
   labs(title = "Key Figure 2:",
     subtitle = title2,
-    caption = "This graph shows a representative sample of the US population’s trust in the\nresponsible use of facial recognition across three different groups.\nIt is clear to see that people trust law enforcement even though law enforcement\nboth has a history of abusing facial recognition technology\n and that current facial recognition systems\n are highly flawed and struggle to accurately identify people of color.\n\nData sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
+    y = "\n\n This graph shows a representative sample of the US population’s trust in\nthe responsible use of facial recognition across three different groups. It is\nclear to see that people trust law enforcement even though law enforcement\nboth has a history of abusing facial recognition technology and that current\nfacial recognition systems are highly flawed and struggle to accurately\nidentify people of color.",
+    caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
   guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
 
 ```
@@ -576,11 +573,11 @@ levels(pew$PUBLICDATA_W49) <- c("Find others'\ninformation","Keep their\nown inf
 pew %>% drop_na(PUBLICDATA_W49) %>% drop_na(sumRTBF) %>% filter(PUBLICDATA_W49 != "Refused") %>% ggplot(aes(x = PUBLICDATA_W49, fill = as.factor(sumRTBF))) +
   geom_bar() +
   labs (
-    title = "Attitudes on How Many Categories of Data Should Be Protected by\n\"The Right To Be Forgotten\" by Stance on Personal Data",
+    title = "Alternate Key Figure 1:",
+    subtitle = "Attitudes on How Many Categories of Data Should Be Protected by\n\"The Right To Be Forgotten\" by Stance on Personal Data",
     x = "Participants find it more important to...",
     y = "",
-    caption = c("Alternate Key\nFigure 2",  "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"))+
-  theme(plot.caption = element_text(hjust=c(0, 1))) +
+    caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
   scale_fill_brewer(palette="YlGnBu", name = "How many of the following categories\nof data should fall under the Right To Be Forgotten:\n   -Data collected by law enforcement\n   -Employment history or work record\n   -Negative media coverage\n   -Potentially embarassing photos or\n     videos", labels=c("None","One","Two","Three","Four"))+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
@@ -600,17 +597,13 @@ Link to Datawrapper article: https://blog.datawrapper.de/divergingbars/
 ## 100% BarPlot
 plot(likert(df_f3[,c(1:3)], grouping = df_f3.reverse[,4]), legend.position="right", centered = FALSE, plot.percents=TRUE, plot.percent.low=FALSE, plot.percent.high=FALSE, plot.percent.neutral=FALSE, center = 2.5) + 
   scale_fill_manual(values = brewer.pal(n=4,"RdBu"), breaks = c("Not at all", "Not too much", "Somewhat", "A great deal")) + #order and color the likert boxes
-  ggtitle(title2) +
-  labs(caption = c("Alternate Key Figure 2",  "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"))+
-  theme(plot.caption = element_text(hjust=c(0, 1))) +
+  labs(title = "Alternate Key Figure 1:",
+       subtitle = title2,
+    caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
   guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
 ```
 
 ### Distribution of Work
 
 Jake and Adriana split the project evenly. While they both were the lead on their respective key figures, they shared code snippets, analytical choices, and design tips. Unless explicitly split by key figure, Adriana and Jake discussed and drafted each essay section of the appendix together while Adriana transformed the drafts into a well written final project. To keep the workload fair, Jake worked on debugging and formatting the final submission.
-
-```{r, echo=F, message=FALSE}
-
-```
 
