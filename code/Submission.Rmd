@@ -31,7 +31,7 @@ Our physical and digital lives have been increasingly entwined during the first 
 
 ## Key Figure 1
 
-```{r central_fig, echo = echoval}
+```{r central_fig, echo = echoval, message = FALSE}
 levels(pew$PUBLICDATA_W49) <- c("More Important To Find Others' Information","More Important To Keep Their Own\nInformation Private", "Refused")
 pew %>% drop_na(PUBLICDATA_W49) %>% drop_na(sumRTBF) %>% filter(PUBLICDATA_W49 != "Refused") %>% ggplot(aes(x = sumRTBF, fill = as.factor(sumRTBF))) +
   geom_bar(position = "dodge", color = 'black') +
@@ -47,6 +47,7 @@ pew %>% drop_na(PUBLICDATA_W49) %>% drop_na(sumRTBF) %>% filter(PUBLICDATA_W49 !
         axis.line = element_line(colour = "black"),
         legend.position = "none") + 
   facet_wrap(~PUBLICDATA_W49)
+ggsave("../imgs/KF1.png")
 ```
 
 
@@ -69,7 +70,7 @@ The resulting image allows the viewer a glimpse into the two major camps as iden
 
 ## Key Figure 2
 
-```{r FACE3, echo= echoval, message=FALSE}
+```{r FACE3, echo= echoval, message = FALSE, warning = FALSE}
 ###Data Manipulation###
 ## Create df of FACE3
 df_f3 <- pew %>% filter(FACE3a_W49 != "No Answer" & FACE3b_W49 != "No Answer" & FACE3c_W49 != "No Answer") %>% filter(FACE3a_W49 != "Refused" & FACE3b_W49 != "Refused" & FACE3c_W49 != "Refused") %>%  dplyr::select(c(FACE3a_W49, FACE3b_W49, FACE3c_W49, groupKnow))
@@ -100,7 +101,7 @@ plot(likert(df_f3.reverse[,c(1:3)], grouping = df_f3.reverse[,4]), legend.positi
     y = "\n\n This graph shows a representative sample of the US population’s trust in\nthe responsible use of facial recognition across three different groups. It is\nclear to see that people trust law enforcement even though law enforcement\nboth has a history of abusing facial recognition technology and that current\nfacial recognition systems are highly flawed and struggle to accurately\nidentify people of color.",
     caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
   guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
-
+ggsave("../imgs/KF2.png", height = 5)
 ```
 
 ### Explanation of Key Figure 2
@@ -232,7 +233,7 @@ sampling. I have copied the statement from the methodology section below:
 
 ### 1. Count Of PUBLICDATA Responses
 
-```{r kf1-appendix-1, echo=echoval}
+```{r kf1-appendix-1, echo=echoval, message = FALSE, warning = FALSE}
 levels(pew$PUBLICDATA_W49) <- c("Find others' information","Keep their own information private", "Refused")
 pew %>% drop_na(PUBLICDATA_W49) %>% filter(PUBLICDATA_W49 != "Refused") %>% ggplot(aes(x = PUBLICDATA_W49)) +
   geom_bar(fill="#47b7c3", color = 'black') +
@@ -247,11 +248,12 @@ pew %>% drop_na(PUBLICDATA_W49) %>% filter(PUBLICDATA_W49 != "Refused") %>% ggpl
             panel.grid.minor = element_blank(),
             panel.background = element_blank(), 
             axis.line = element_line(colour = "black"))
+ggsave("../imgs/KF1_A1.png")
 ```
 
 ### 2. How Much Data Do People Think We Have The Right To Forget
 
-```{r kf1-appendix-2, echo=echoval}
+```{r kf1-appendix-2, echo=echoval, message = FALSE, warning = FALSE}
 pew %>% drop_na(sumRTBF) %>% ggplot(aes(x = sumRTBF)) +
   geom_histogram(binwidth = 1, fill = "#a3d9b5", color = 'black') +
   labs (
@@ -265,11 +267,12 @@ pew %>% drop_na(sumRTBF) %>% ggplot(aes(x = sumRTBF)) +
             panel.grid.minor = element_blank(),
             panel.background = element_blank(), 
             axis.line = element_line(colour = "black"))
+ggsave("../imgs/KF1_A2.png")
 ```
 
 ### 3. Underlying Distribution Of Counts For All Four RTBF Categories
 
-```{r kf1-appendix-3, echo=echoval}
+```{r kf1-appendix-3, echo=echoval, message = FALSE, warning = FALSE}
 
 levels(pew$RTBFa_W49) <- c("Should be forgotten","Should be remembered", "Refused")
 p1 <- pew %>% drop_na(RTBFa_W49) %>% filter(RTBFa_W49 != "Refused") %>% ggplot(aes(x = RTBFa_W49)) +
@@ -334,11 +337,34 @@ grid.arrange(p1,p2,p3,p4,
             ) 
 ```
 
+```{r save-plot, echo=echoval, eval=echoval, message= FALSE}
+##Old fashioned save because grid doesn't play nice w/ggsave
+png("../imgs/KF1_A3.png", width=1280, height=720)
+
+grid.arrange(p1,p2,p3,p4, 
+             ncol=2,
+            top = textGrob("Underlying Distribution Of Counts For All Four RTBF Categories",
+              x = 0, # need to keep on left
+              y = .7,
+              just = "left", #left justified
+              gp = gpar(fontsize = 18) # bigger font
+             ),
+             bottom = textGrob("Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy",
+                               x = 1, #is on domian [0,1]
+                               gp = gpar(fontsize = 8), # smaller font
+                           just = "right") #right justified
+            ) 
+
+dev.off()
+
+```
+
+
 ### Additional Figures For Key Figure 2
 
 ### 1. Underlying Distribution of Tech Literacy
 
-```{r KNOW-Counts, echo=echoval, out.height="50%"}
+```{r KNOW-Counts, echo=echoval, message = FALSE, warning = FALSE}
 pew %>% ggplot(aes(x =sumKnowFactor, fill = groupKnow)) +
   geom_bar(position = 'dodge', color = 'black') +
   scale_fill_brewer(palette = "Blues") +
@@ -352,7 +378,7 @@ pew %>% ggplot(aes(x =sumKnowFactor, fill = groupKnow)) +
   theme(plot.caption = element_text(hjust=c(0, 1))) + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
-
+ggsave("../imgs/KF2_A1.png")
 ```
 
 We decided to create a dummy variable that reflected how knowledgeable the respondent was about technology. The Pew survey had ten questions assessing each respondent’s knowledge on topics ranging from what the ‘s’ in ‘https’ means to how social media platforms generate revenue. Four of these questions -- “Which of the following is the largest source of revenue for most major social media platforms?”, “Where might someone encounter a phishing scam?”, “Which two companies listed below are both owned by Facebook?”, and a question asking respondents to identify a picture of Twitter co-founder Jack Dorsey -- were excluded because they were not directly related to measuring a respondent’s knowledge of how technology worked on a technical or legal level. Thus, each respondent received a literacy score between zero and six; this score was the sum of the number of questions the respondent answered correctly. The above figure, additional figure 1 for key figure 2, visualizes the underlying distribution of literacy scores.  
@@ -364,7 +390,7 @@ After a cursory glance it is clear to see that this binning scheme puts an empha
 
 ### 2. Self Reported Facial Recognition Familiarity
 
-```{r FACE2_Bar, echo=echoval, message=FALSE}
+```{r FACE2_Bar, echo=echoval, message = FALSE, warning = FALSE}
 pew %>% filter(FACE1_W49 != "Refused") %>% ggplot(aes(x = groupKnow, fill = FACE1_W49)) +
   geom_bar(position = 'dodge', color = 'black') +
   scale_fill_brewer(palette = "Dark2") +
@@ -377,10 +403,11 @@ pew %>% filter(FACE1_W49 != "Refused") %>% ggplot(aes(x = groupKnow, fill = FACE
   theme(plot.caption = element_text(hjust=c(0, 1))) + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
+ggsave("../imgs/KF2_A2.png")
 ```
 
 ### 3. Respondent's Understanding of Facial Recognition 
-```{r FACE3_Likert, echo=echoval, message=FALSE}
+```{r FACE3_Likert, echo=echoval, message = FALSE, warning = FALSE}
 ###Generate the Data Frame###
 ## Create df of FACE2
 df_f2 <- pew %>% filter(FACE2a_W49 != "Refused" & FACE2b_W49 != "Refused" & FACE2c_W49 != "Refused") %>%  dplyr::select(c(FACE2a_W49, FACE2b_W49, FACE2c_W49, groupKnow))
@@ -416,12 +443,13 @@ plot(likert(df_f2[,c(1:3)], grouping = df_f2.reverse[,4]), legend.position="righ
     labs(caption = c("Additional Figure 3.5\nFor Key Figure 2",  "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"))+
   theme(plot.caption = element_text(hjust=c(0, 1))) +
   guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
+ggsave("../imgs/KF2_A3.png")
 ```
 
 
 ### 4. What Situations Respondents Think It Is Acceptable To Use Facial Recognition
 
-```{r FACE4_Likert, echo=echoval, message=FALSE}
+```{r FACE4_Likert, echo=echoval, message = FALSE, warning = FALSE}
 df_f4 <- pew %>% select(c(FACE4a_W49, FACE4b_W49, FACE4c_W49, FACE4d_W49, groupKnow))
 
 df_f4 <- df_f4 %>% 
@@ -454,6 +482,7 @@ plot(likert(df_f4.reverse2[,c(1:4)], grouping = df_f4.reverse[,5]), legend.posit
     labs(       caption = c("Additional Figure 4.5\nFor Key Figure 2",  "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"))+
   theme(plot.caption = element_text(hjust=c(0, 1))) +
   guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
+ggsave("../imgs/KF2_A4.png")
 ```
 
 ### Additional Tables For Key Figure 1
@@ -503,7 +532,7 @@ knitr::kable(KFT_T2, "simple", caption = "Numeric Summary That Involves Uncertai
 
 By grouping the data by `PUBLICDATA_W49` results and running an ANOVA test on each group’s `sumRTBF` count variables, we are able to say with extremely high confidence (on a P-value that is extremely close to 0 with a value of `2e-16`) that there is a statistically significant difference between public and private data oriented respondents in the average number of categories of data they deem worthy of falling under the Right to Be Forgotten.
 
-```{r KF1_Anova, echo = echoval}
+```{r KF1_Anova, echo = echoval, message = FALSE}
 rtbf_anova <- aov(sumRTBF ~ PUBLICDATA_W49, data = pew)
 summary(rtbf_anova)
 ```
@@ -517,7 +546,7 @@ I would like to introduce one small caveat that does not delegitimize these find
 Using a 1-way ANOVA test on each of the three facets in key figure 2 -- Law Enforcement's Use Of Facial Recognition, Tech Companies' Use Of Facial Recognition, and Advertisers' Use Of Facial Recognition -- we are able to say with extremely high confidence (on a P-value that is extremely close to 0 with a value of `1.66e-14`, `5.37e-11`, and `<2e-16` respectively) that there is a statistically significant difference in the responses of those categorized as "No Literacy," "Some Literacy,
 and "High Literacy" in all three facets!
 
-```{r KF2_Anova, echo = echoval}
+```{r KF2_Anova, echo = echoval, message = FALSE}
 ##Run ANOVA Tests
 ## Literacy level is the FACTOR
 ## H_{0}: No Literacy = Some Literacy = High Literacy for their trust in each group 
@@ -527,19 +556,19 @@ KF2_anova_ad <- aov(as.numeric(FACE3a_W49) ~ groupKnow, data = pew)
 ```
 
 *ANOVA Summary For Law Enforcement's Use Of Facial Recognition*
-```{r KF2_Anova_Law, echo = echoval}
+```{r KF2_Anova_Law, echo = echoval, message = FALSE}
 ##Generate Summary
 summary(KF2_anova_law)
 ```
 
 *ANOVA Summary For Tech Companies' Use Of Facial Recognition*
-```{r KF2_Anova_Tech, echo = echoval}
+```{r KF2_Anova_Tech, echo = echoval, message = FALSE}
 ##Generate Summary
 summary(KF2_anova_tech)
 ```
 
 *ANOVA Summary For Advertisers' Use Of Facial Recognition*
-```{r KF2_Anova_Ad, echo = echoval}
+```{r KF2_Anova_Ad, echo = echoval, message = FALSE}
 ##Generate Summary
 summary(KF2_anova_ad)
 ```
@@ -568,7 +597,7 @@ We chose fairly quickly to forgo what we would think of as the “reverse” of 
 
 A visualization that we considered, but rejected, is one which uses not a dodged bar chart but a stacked one, showing the two categories of public versus private data people as two bars and having those bars be partitioned accordingly to reflect the internal distribution of counts of categories that should be protected. This visualization looks as follows:
 
-```{r central_fig_alt, echo = echoval}
+```{r central_fig_alt, echo = echoval, message = FALSE}
 levels(pew$PUBLICDATA_W49) <- c("Find others'\ninformation","Keep their\nown information\nprivate", "Refused")
 pew %>% drop_na(PUBLICDATA_W49) %>% drop_na(sumRTBF) %>% filter(PUBLICDATA_W49 != "Refused") %>% ggplot(aes(x = PUBLICDATA_W49, fill = as.factor(sumRTBF))) +
   geom_bar() +
@@ -582,6 +611,7 @@ pew %>% drop_na(PUBLICDATA_W49) %>% drop_na(sumRTBF) %>% filter(PUBLICDATA_W49 !
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
         axis.line = element_line(colour = "black"))
+ggsave("../imgs/AKF1.png")
 ```
 This visualization does both things that we would like it to do: it makes immediately apparent the difference in scale between those who prioritize public data versus private, and it has a clear color-coded breakdown of how many categories of data each class thinks should be protected. However, it is clunky and makes it harder to closely examine the distribution of sum counts than it is in our final graphic. As Healy breaks down, bad design is plagued by bad perception; stacking the boxes for each number makes it hard to directly compare the distribution of counts by not having a common base. This in turn warps our perception of the final data. So while this tells a similar story to the one up above, we ended up making additional aesthetic decisions to better convey that information in a clear and pleasing way.
 
@@ -593,17 +623,22 @@ That all being said, none of my charts have neutrals. Thus, we think the divergi
 
 Link to Datawrapper article: https://blog.datawrapper.de/divergingbars/
 
-```{r FACE3 Alt, echo=echoval, message=FALSE}
+```{r FACE3 Alt, echo=echoval, message = FALSE, warning = FALSE}
 ## 100% BarPlot
 plot(likert(df_f3[,c(1:3)], grouping = df_f3.reverse[,4]), legend.position="right", centered = FALSE, plot.percents=TRUE, plot.percent.low=FALSE, plot.percent.high=FALSE, plot.percent.neutral=FALSE, center = 2.5) + 
   scale_fill_manual(values = brewer.pal(n=4,"RdBu"), breaks = c("Not at all", "Not too much", "Somewhat", "A great deal")) + #order and color the likert boxes
-  labs(title = "Alternate Key Figure 1:",
+  labs(title = "Alternate Key Figure 2:",
        subtitle = title2,
     caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
   guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
+ggsave("../imgs/AKF2.png")
 ```
 
 ### Distribution of Work
 
 Jake and Adriana split the project evenly. While they both were the lead on their respective key figures, they shared code snippets, analytical choices, and design tips. Unless explicitly split by key figure, Adriana and Jake discussed and drafted each essay section of the appendix together while Adriana transformed the drafts into a well written final project. To keep the workload fair, Jake worked on debugging and formatting the final submission.
+```{r}
+
+```
+
 
