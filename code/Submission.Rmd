@@ -38,7 +38,7 @@ pew %>% drop_na(PUBLICDATA_W49) %>% drop_na(sumRTBF) %>% filter(PUBLICDATA_W49 !
   labs (
     title = "Key Figure 1:",
     subtitle = "Attitudes on How Many Categories of Data Should Be Protected by\n\"The Right To Be Forgotten\" Split by Stance on Personal Data Use",
-    x = "How many of the following categories fall under the Right to Be Forgotten?\n-Data collected by law enforcement   -Employment history or work record\n   -Negative media coverage   -Potentially embarassing photos or videos",
+    x = "How many of the following categories fall under the Right to Be Forgotten?\n-Data collected by law enforcement   -Employment history or work record\n   -Negative media coverage   -Potentially embarrassing photos or videos",
     y = "",
     caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
   scale_fill_brewer(palette="YlGnBu") +
@@ -98,7 +98,7 @@ plot(likert(df_f3.reverse[,c(1:3)], grouping = df_f3.reverse[,4]), legend.positi
   ggtitle(title2) +
   labs(title = "Key Figure 2:",
     subtitle = title2,
-    y = "\n\n This graph shows a representative sample of the US population’s trust in\nthe responsible use of facial recognition across three different groups. It is\nclear to see that people trust law enforcement even though law enforcement\nboth has a history of abusing facial recognition technology and that current\nfacial recognition systems are highly flawed and struggle to accurately\nidentify people of color.",
+    y = "\n\n This graph shows a representative sample of the US populations' trust in\nthe responsible use of facial recognition across three different groups. It is\nclear to see that people trust law enforcement even though law enforcement\nboth has a history of abusing facial recognition technology and that current\nfacial recognition systems are highly flawed and struggle to accurately\nidentify people of color.",
     caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
   guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
 ggsave("../imgs/KF2.png", height = 5)
@@ -154,8 +154,7 @@ Zuboff, S. (2019). *The age of surveillance capitalism: The fight for a human fu
 The dataset we used is the 2019 PEW Survey on American Trends on Technology. The full citation for this data set
 is as follows:
 
-Pew Research Center. (2019). American Trends Panel (W49). Retrieved from https://www.dropbox.com/sh
-/adyrtaju2jd7a2d/AAC2fmHoYs2SwVYKqCIkTxOsa?dl=0
+Pew Research Center. (2019). American Trends Panel (W49). Retrieved from [URL REMOVED]
 
 The data set is a sample of 4272 respondents of people 18 years or older living in the US. This sample
 consisted of both English and Spanish-language survey takers. The methodology also details the stratified
@@ -634,9 +633,6 @@ plot(likert(df_f3[,c(1:3)], grouping = df_f3.reverse[,4]), legend.position="righ
 ggsave("../imgs/AKF2.png")
 ```
 
-### Distribution of Work
-
-Jake and Adriana split the project evenly. While they both were the lead on their respective key figures, they shared code snippets, analytical choices, and design tips. Unless explicitly split by key figure, Adriana and Jake discussed and drafted each essay section of the appendix together while Adriana transformed the drafts into a well written final project. To keep the workload fair, Jake worked on debugging and formatting the final submission.
 ```{r}
 
 ```

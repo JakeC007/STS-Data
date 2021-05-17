@@ -1,0 +1,77 @@
+---
+title: "Misc Viz"
+author: "Jake Chanenson"
+date: "5/17/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(foreign)      
+library(ggplot2)      
+library(colorspace)   #better colors for ggplot
+library(tidyverse)    
+library(dplyr)
+library(grid)
+library(gridExtra)
+library(broom)
+library(GGally)
+library(RColorBrewer)
+library(likert) #for creating a likert plot
+library(kableExtra) # not needed but makes the table nicer
+echoval <- F
+load("../../Pew/pewTech.RData")
+```
+
+### Concern Of Company Tracking Faceted on Tech Literacy
+```{r company tracking, echo= echoval, message = FALSE, warning = FALSE}
+pew %>% drop_na(CONCERNCO_W49) %>% filter(CONCERNCO_W49 != "Refused") %>% ggplot(aes(x = CONCERNCO_W49, fill = CONCERNCO_W49)) +
+  geom_bar(color = 'black') +
+  theme(axis.text.x = element_blank()) +
+  scale_fill_brewer(palette = "Dark2") +
+  facet_wrap(. ~groupKnow, scales = "free_y") +
+  theme_bw() +
+  theme(
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank()) +
+  labs (
+    title = "Concern Of Company Tracking Grouped by Tech Literacy",
+    fill = "How Concerned Are Respondents\nAbout Companies Tracking Them?",
+    x = "Tech Literacy Level",
+    caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"
+  ) 
+ggsave("../imgs/Misc/company_tracking.png")
+```
+
+### Understanding of Targeted Ad Data Grouped by Tech Literacy
+```{r targeted-ad, echo= echoval, message = FALSE, warning = FALSE}
+pew %>% drop_na(PROFILE4_W49) %>% filter(PROFILE4_W49 != "Refused") %>% ggplot(aes(x = PROFILE4_W49, fill = PROFILE4_W49)) +
+  geom_bar(color = 'black') +
+  facet_wrap(. ~groupKnow, scales = "free_y") +
+  theme_bw() +
+  theme(
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank()) +
+  labs (
+    title = "Understanding of Targeted Ad Data Grouped by Tech Literacy",
+    # subtitle = "Optional",
+    fill = "Do You Understand What Data\nIs Used To Create Targeted Ads?",
+    x = "Tech Literacy Level",
+    caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"
+  )
+ggsave("../imgs/Misc/targeted_ad_understanding.png")
+```
+
+### Key Figure 2 With Upper and Lower Percents
+```{r, KF2-percents, echo= echoval, message = FALSE, warning = FALSE}
+## Centerd, Percents 
+## A bug in the likert package is what is alphabetizing the facets
+plot(likert(df_f3.reverse[,c(1:3)], grouping = df_f3.reverse[,4]), legend.position="right", centered = TRUE, plot.percents=TRUE, plot.percent.low=TRUE, plot.percent.high=TRUE, plot.percent.neutral=FALSE, center = 2.5) + 
+  scale_fill_manual(values = brewer.pal(n=4,"RdBu"), breaks = c("Not at all", "Not too much", "Somewhat", "A great deal")) + #order and color the likert boxes
+  ggtitle(title2) +
+  labs(caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy")+
+  guides(fill = guide_legend(title="Responses", reverse = TRUE)) #to reverse the order in the legend
+ggsave(file = "../imgs/Misc/KF2_percents.png")
+```
+
