@@ -62,10 +62,49 @@ pew %>% drop_na(PROFILE4_W49) %>% filter(PROFILE4_W49 != "Refused") %>% ggplot(a
   )
 ggsave("../imgs/Misc/targeted_ad_understanding.png")
 ```
+#### Privacy Policy Reading Habits Grouped by Tech Literacy
+```{r}
+#graph 
+pew %>% drop_na(PP2_W49) %>% filter(PP2_W49 != "Refused") %>% ggplot(aes(x = PP2_W49, fill = PP2_W49)) +
+  geom_bar(color = 'black') +
+  facet_wrap(. ~groupKnow, scales = "free_y") +
+  theme_bw() +
+  theme(
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank()) +
+  labs (
+    title = "Privacy Policy Reading Habits Grouped by Tech Literacy",
+    fill = "Privacy Policy\nReading Habbits",
+    x = "Tech Literacy Level",
+    caption = "Data sourced from\n2019 PEW American Trends Panel\nSurvey on Social Media Usage and\nPerceptions of Digital Privacy"
+  )
+ggsave("../imgs/Misc/privacy_policy.png")
+```
 
 ### Key Figure 2 With Upper and Lower Percents
 ```{r, KF2-percents, echo= echoval, message = FALSE, warning = FALSE}
-## Centerd, Percents 
+###Data Manipulation###
+## Create df of FACE3
+df_f3 <- pew %>% filter(FACE3a_W49 != "No Answer" & FACE3b_W49 != "No Answer" & FACE3c_W49 != "No Answer") %>% filter(FACE3a_W49 != "Refused" & FACE3b_W49 != "Refused" & FACE3c_W49 != "Refused") %>%  dplyr::select(c(FACE3a_W49, FACE3b_W49, FACE3c_W49, groupKnow))
+
+## Rename Cols
+df_f3  <- df_f3  %>% 
+  rename("Advertisers' Use Of Facial Recognition" = FACE3a_W49,
+          "Tech Companies' Use Of Facial Recognition" = FACE3b_W49,
+          "Law Enforcement's Use Of Facial Recognition" = FACE3c_W49)
+df_f3  <- as.data.frame(df_f3)
+df_f3 <- droplevels(df_f3) #remove unused levels 
+df_f3 <- df_f3[, c(3,2,1,4)] #change order of cols for facets to come in nice order
+
+## Reverse levels 
+df_f3.reverse <- reverse.levels(df_f3)
+
+                            
+## Generate Title
+title2 <- "Trust In Responsible Use Of Facial Recognition Tech\nGrouped By Tech Literacy"
+
+
+## Centerd, Percents Viz
 ## A bug in the likert package is what is alphabetizing the facets
 plot(likert(df_f3.reverse[,c(1:3)], grouping = df_f3.reverse[,4]), legend.position="right", centered = TRUE, plot.percents=TRUE, plot.percent.low=TRUE, plot.percent.high=TRUE, plot.percent.neutral=FALSE, center = 2.5) + 
   scale_fill_manual(values = brewer.pal(n=4,"RdBu"), breaks = c("Not at all", "Not too much", "Somewhat", "A great deal")) + #order and color the likert boxes
